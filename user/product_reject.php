@@ -25,7 +25,7 @@ $es=mysql_fetch_array($check);
     <!-- Main content -->
     <section class="content">
       <div class="row">
-        <div class="col-xs-9">
+        <div class="col-xs-12">
           <div class="box">
             <div class="box-header with-border box-solid bg-green">
               <h3 class="box-title">List Product Reject</h3>

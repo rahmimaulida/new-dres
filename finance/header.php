@@ -4,19 +4,19 @@ session_start();
 include("../config.php");
 if($_SESSION['level'] == 'Super User'){
   header("location: ../su/index.php");
+}else if($_SESSION['level'] == 'User'){
+  header("location: ../user/index.php");
 }else if($_SESSION['level'] == 'Operator'){
   header("location: ../operator/index.php");
-}else if($_SESSION['level'] == 'Administrator'){
-  header("location: ../admin/index.php");
 }else if($_SESSION['level'] == 'Visitor'){
   header("location: ../guest/index.php");
 }else if($_SESSION['level'] == ''){
   header("location: ../index.php");
 }
-$qry=mysql_query("SELECT count(no_ticket) as jumlahTiket FROM tbl_approve where spv='' ");
+$qry=mysql_query("SELECT * FROM tbl_notif WHERE target='".$_SESSION['username']."'");
 $num=mysql_num_rows($qry);
-//$qry=mysql_query("SELECT * FROM tbl_notif WHERE `target`='".$_SESSION['username']."'");
-//$num=mysql_num_rows($qry);
+error_reporting(0);
+ini_set('display_errors', 0);
 ?>
 <!DOCTYPE html>
 <html>
@@ -51,6 +51,15 @@ $num=mysql_num_rows($qry);
   <!-- Select2 -->
   <link rel="stylesheet" href="../assets/bower_components/bootstrap-select/dist/css/bootstrap-select.css">
 
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Google Font -->
   <style>
   .div-decorator
 {
@@ -449,7 +458,6 @@ animation: burst 3s infinite linear
 }
 
   </style>
-
 </head>
 <body class="hold-transition skin-green sidebar-mini sidebar-collapse">
 <div class="wrapper">
@@ -469,7 +477,7 @@ animation: burst 3s infinite linear
         <span class="sr-only">Toggle navigation</span>
       </a>
       <?php
-      $qry=mysql_query("SELECT * FROM tbl_approve where spv='' ");
+      $qry=mysql_query("SELECT * FROM tbl_approve where mgr_name!='' AND finance_mgr='' ");
       $num=mysql_num_rows($qry);
       ?>
       <div class="navbar-custom-menu">
@@ -485,7 +493,7 @@ animation: burst 3s infinite linear
               <li>
                 <!-- inner menu: contains the actual data -->
                 <ul class="menu">
-                  <?php while($res=mysql_fetch_array($qry)){ ?>
+                <?php while($res=mysql_fetch_array($qry)){ ?>
                   <li><!-- start message -->
                     <a href="notif_waiting_approval.php?ticket=<?php echo $res['no_ticket']?>">
                       <div class="pull-left">
@@ -495,18 +503,20 @@ animation: burst 3s infinite linear
                         <p>
                           Ticket number <?php echo $res['no_ticket']?> needs to approve
                        <?php //echo $num;?> <!--Tickets need(s) to Approve -->
-                      </p><small><i class="fa fa-clock-o"></i> 5 mins</small>
+                      </p>
+                        <small><i class="fa fa-clock-o"></i> 5 mins</small>
                       </h6>
                       <p><?php echo $res['info']; ?></p>
                     </a>
                   </li>
                   <!-- end message -->
-                <?php } ?>
+                  <?php } ?>
                 </ul>
               </li>
-              <li class="footer"><a href="waiting_approval.php">See All Notif</a></li>
+              <li class="footer"><a href="product_reject.php">See All Notif</a></li>
             </ul>
           </li>
+
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -520,7 +530,7 @@ animation: burst 3s infinite linear
 
                 <p>
                   <?php echo $_SESSION['name']; ?>
-                  <small><?php echo $_SESSION['level']; ?></small>
+                  <small><?php echo $_SESSION['position']; ?></small>
                 </p>
               </li>
               <!-- Menu Body -->
@@ -567,6 +577,23 @@ animation: burst 3s infinite linear
         </li>
         <li class="treeview">
           <a href="#">
+            <i class="fa fa-clipboard"></i>
+            <span>Master Data</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="userview.php"><i class="fa fa-circle-o"></i> Master User</a></li>
+            <li><a href="lineview.php"><i class="fa fa-circle-o"></i> Master Line</a></li>
+            <li><a href="sectorview.php"><i class="fa fa-circle-o"></i> Master Sector</a></li>
+            <li><a href="departmentview.php"><i class="fa fa-circle-o"></i> Master Department</a></li>
+            <li><a href="materialview.php"><i class="fa fa-circle-o"></i> Master Material</a></li>
+            <li><a href="deflist.php"><i class="fa fa-circle-o"></i> Master Defect</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
             <i class="fa fa-list"></i>
             <span>Execution</span>
             <span class="pull-right-container">
@@ -574,9 +601,15 @@ animation: burst 3s infinite linear
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="waiting_approval.php"><i class="fa fa-circle-o"></i> Waiting List Approval</a></li>
-            <li><a href="product_reject.php"><i class="fa fa-circle-o"></i> History</a></li>
+            <li><a href="product_reject.php"><i class="fa fa-circle-o"></i> Waiting List Approval</a></li>
+            <li><a href="execution_approval.php"><i class="fa fa-circle-o"></i> Approved List</a></li>
+            <li><a href="history_approval.php"><i class="fa fa-circle-o"></i> History</a></li>
           </ul>
+        </li>
+        <li>
+          <a href="threshold.php">
+            <i class="fa fa-dollar"></i> <span>Threshold</span>
+          </a>
         </li>
         <li>
           <a href="delegateForm.php">

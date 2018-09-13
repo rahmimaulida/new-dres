@@ -84,11 +84,12 @@ $es=mysql_fetch_array($check);
                 $amount=mysql_fetch_array($tressss);
                 ?>
                 <tr class="text-center" <?php if ($b['BackFrom'] != 0 || $b['BackFrom'] != '' ){?>style= "color :red" <?php } ?>>
-                  <?php if($b['total'] <= $qty['thresholdQty'] && $b['amount'] <= $amount['threshold']){?>
-                  <td><a class="btn btn-warning btn-xs" href="#" data-target="#ModalDetail" data-whatever="<?php echo $b['no_ticket']; ?>" data-toggle="modal"><?php echo $b['no_ticket']; $no_ticket = $b['no_ticket']; ?></a></td>
-                <?php } else { ?>
-                  <td><a class="btn btn-danger btn-xs" href="#" data-target="#ModalDetail" data-whatever="<?php echo $b['no_ticket']; ?>" data-toggle="modal"><?php echo $b['no_ticket']; $no_ticket = $b['no_ticket']; ?></a></td>
-                <?php } ?>
+                    <?php if($b['total'] <= $qty['thresholdQty'] && $b['amount'] <= $amount['threshold']){?>
+                  <td><a class="btn btn-warning btn-xs" href="#" data-target="#ModalDetail" data-whatever="<?php echo $b['no_ticket']; ?>"
+                    data-toggle="modal"><?php echo $b['no_ticket']; $no_ticket = $b['no_ticket']; ?></a></td>
+                  <?php } else { ?>
+                    <td><a class="btn btn-danger btn-xs" href="#" data-target="#ModalDetail" data-whatever="<?php echo $b['no_ticket']; ?>" data-toggle="modal"><?php echo $b['no_ticket']; $no_ticket = $b['no_ticket']; ?></a></td>
+                  <?php } ?>
                   <td><?php echo $b['insertedBy']; ?></td>
                   <td><?php echo $b['insertDate']; ?></td>
                   <td><?php echo $b['eng_name']; ?></td>
@@ -107,20 +108,19 @@ $es=mysql_fetch_array($check);
                   $tressss=MySQL_query("SELECT * FROM tbl_threshold WHERE id_threshold=1");
                   $amount=mysql_fetch_array($tressss);
                   ?>
-                    <form class="form-horizontal" action="approve.php" method="post">
+                  <form class="form-horizontal" action="approve.php" method="post">
                   <td>
-                    <input type="hidden" name="ticket" id="ticket" value="<?php echo $no_ticket; ?>">
+                    <input type="hidden" name="ticket" id="ticket" value="<?php echo $b['no_ticket'];?>">
                     <input type="hidden" name="comment" id="comment" value="-">
-
                     <?php if($b['total'] <= $qty['thresholdQty'] && $b['amount'] <= $amount['threshold']){?>
-                    <button type="submit" class="btn btn-success btn-sm" name="approve" id="approve" >Approve <i class="fa fa-thumbs-up"></i></button>
+                    <button type="submit" class="btn btn-success btn-sm" name="approve" id="approve">Approve <i class="fa fa-thumbs-up"></i></button>
                     <?php }else{?>
                     <a class="btn btn-success btn-sm" name="approve" id="approve" href="#" data-target="#ModalDetailsCommentApprove" data-whatever="<?php echo $b['no_ticket']; ?>" data-toggle="modal">Approve <i class="fa fa-thumbs-up"></i></a><?php }?>
                     <a class="btn btn-danger btn-sm" name="reject" id="reject" href="#" data-target="#ModalDetailsCommentReject" data-whatever="<?php echo $b['no_ticket']; ?>"
                       data-toggle="modal">&nbsp;&nbsp;&nbsp;Reject&nbsp;&nbsp;&nbsp; <i class="fa fa-thumbs-down"></i></a></td>
+                  </form>
                 </tr>
-                <?php } ?>
-              </form>
+              <?php } ?>
                 </tbody>
               </table>
             </div>

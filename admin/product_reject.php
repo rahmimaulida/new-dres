@@ -133,9 +133,10 @@ $es=mysql_fetch_array($check);
                     <a class="btn btn-success btn-sm" name="approve" id="approve" href="#" data-target="#ModalDetailsCommentApprove" data-whatever="<?php echo $b['no_ticket']; ?>" data-toggle="modal">Approve <i class="fa fa-thumbs-up"></i></a><?php }?>
                     <a class="btn btn-danger btn-sm" name="reject" id="reject" href="#" data-target="#ModalDetailsCommentReject" data-whatever="<?php echo $b['no_ticket']; ?>"
                       data-toggle="modal">&nbsp;&nbsp;Reject&nbsp;&nbsp; <i class="fa fa-thumbs-down"></i></a></td>
+                      </form>
                 </tr>
                 <?php } ?>
-              </form>
+
                 </tbody>
               </table>
               </div>

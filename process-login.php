@@ -1,12 +1,12 @@
-<?php 
+<?php
 include 'config.php';
- 
+
 $username = $_POST['username'];
 $password = md5($_POST['password']);
- 
+
 $login = mysql_query("SELECT * FROM tbl_users WHERE userid='$username' and password='$password'");
 $check = mysql_num_rows($login);
- 
+
 if($check > 0){
 	session_start();
 	while($res=mysql_fetch_array($login)){
@@ -24,10 +24,12 @@ if($check > 0){
 			header("location: su/index.php");
 		}else if($level == 'Administrator'){
 			header("location: admin/index.php");
+		}else if($level == 'Finance'){
+			header("location: finance/index.php");
 		}
 	}
 }else{
-	header("location:index.php");	
+	header("location:index.php");
 }
- 
+
 ?>

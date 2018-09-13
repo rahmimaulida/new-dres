@@ -1,5 +1,4 @@
 <?php
-session_start();
 error_reporting(0);
 include '../config.php';
 include 'header.php';
@@ -24,7 +23,6 @@ $es=mysql_fetch_array($check);
     </section>
 
     <!-- Main content -->
-
     <section class="content">
       <div class="row">
         <div class="col-xs-12">
@@ -34,7 +32,8 @@ $es=mysql_fetch_array($check);
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <div class="table-responsive">
+              <form class="form-horizontal" action="approve.php" method="post">
+                <div class="table-responsive">
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr valign="middle">
@@ -42,11 +41,13 @@ $es=mysql_fetch_array($check);
                   <th class="text-center" colspan="2">Line Inspector</th>
                   <th class="text-center" colspan="2">Engineer</th>
                   <th class="text-center" colspan="2">Supervisor</th>
+                  <th class="text-center" colspan="2">CS&Q Manager</th>
+                  <th class="text-center" colspan="2">Finance Manager</th>
+                  <th class="text-center" width="3px" rowspan="2">SAP Admin</th>
                   <th class="text-center" rowspan="2">Sector</th>
                   <th class="text-center" width="1px" rowspan="2">Total Reject Qty</th>
                   <th class="text-center" width="2px" rowspan="2">Total Amount</th>
                   <th class="text-center" rowspan="2">Status</th>
-                  <th class="text-center" rowspan="2">Back From</th>
                   <th class="text-center" rowspan="2">Action</th>
                 </tr>
                 <tr>
@@ -59,23 +60,26 @@ $es=mysql_fetch_array($check);
                   <th class="text-center">Name</th>
                   <th class="text-center"  width="5px">Date</th>
 
-                  </tr>
+                  <th class="text-center">Name</th>
+                  <th class="text-center"  width="5px">Date</th>
+
+                  <th class="text-center">Name</th>
+                  <th class="text-center"  width="5px">Date</th>
+                </tr>
 
                 </thead>
 
                 <tbody>
                 <?php
                   $query=mysql_query("SELECT tbl_prod_reject.no_ticket, tbl_prod_reject.insertDate, tbl_prod_reject.sector,
-                    tbl_prod_reject.insertedBy, tbl_approve.BackFrom, SUM(tbl_prod_reject.qty) as total,
+                    tbl_prod_reject.insertedBy, SUM(tbl_prod_reject.qty) as total,
                   SUM(tbl_prod_reject.amount) as amount, tbl_prod_reject.action, tbl_prod_reject.pic,
                   tbl_approve.mgr_name, tbl_approve.eng_name, tbl_approve.spv, tbl_approve.finance_mgr, tbl_approve.sap_admin,
                   tbl_approve.eng_date, tbl_approve.mgr_date, tbl_approve.spv_date, tbl_approve.finance_mgrDate
                     FROM tbl_prod_reject
                   left join tbl_approve on tbl_approve.no_ticket= tbl_prod_reject.no_ticket
-                  WHERE plant='".$tes['plant']."' AND spv ='' AND eng_name!=''
+                  WHERE plant='".$tes['plant']."' AND mgr_name !='' AND spv!='' AND finance_mgr!=''
                   GROUP BY no_ticket") or die(mysql_error());
-                  $jumlah=mysql_num_rows($query);
-                  if ($jumlah==0){?><td colspan="17" style="text-align: center;">NO WAITING LIST APPROVAL</td><?php }
                   while($b=mysql_fetch_array($query)){
                 ?>
                 <?php
@@ -86,47 +90,34 @@ $es=mysql_fetch_array($check);
                 $tressss=MySQL_query("SELECT * FROM tbl_threshold WHERE id_threshold=1");
                 $amount=mysql_fetch_array($tressss);
                 ?>
-                  <tr class="text-center" <?php if ($b['BackFrom'] != 0 || $b['BackFrom'] != '' ){?>style= "color :red" <?php } ?>>
-                      <?php if($b['total'] <= $qty['thresholdQty'] && $b['amount'] <= $amount['threshold']){?>
-                    <td><a class="btn btn-warning btn-xs" href="#" data-target="#ModalDetail" data-whatever="<?php echo $b['no_ticket']; ?>"
-                      data-toggle="modal"><?php echo $b['no_ticket']; $no_ticket = $b['no_ticket']; ?></a></td>
-                    <?php } else { ?>
-                      <td><a class="btn btn-danger btn-xs" href="#" data-target="#ModalDetail" data-whatever="<?php echo $b['no_ticket']; ?>" data-toggle="modal"><?php echo $b['no_ticket']; $no_ticket = $b['no_ticket']; ?></a></td>
-                    <?php } ?>
-                    <td><?php echo $b['insertedBy']; ?></td>
-                    <td><?php echo $b['insertDate']; ?></td>
-                    <td><?php echo $b['eng_name']; ?></td>
-                    <td><?php echo $b['eng_date']; ?></td>
-                    <td><?php echo $b['spv']; ?></td>
-                    <td><?php echo $b['spv_date']; ?></td>
+                <tr class="text-center">
+                  <?php if($b['total'] <= $qty['thresholdQty'] && $b['amount'] <= $amount['threshold']){?>
+                  <td><a class="btn btn-warning btn-xs" href="#" data-target="#ModalDetail" data-whatever="<?php echo $b['no_ticket']; ?>"
+                    data-toggle="modal"><?php echo $b['no_ticket']; ?></a></td>
+                  <?php } else { ?>
+                    <td><a class="btn btn-danger btn-xs" href="#" data-target="#ModalDetail" data-whatever="<?php echo $b['no_ticket']; ?>" data-toggle="modal"><?php echo $b['no_ticket']; $no_ticket = $b['no_ticket']; ?></a></td>
+                  <?php } ?>
+                  <td><?php echo $b['insertedBy']; ?></td>
+                  <td><?php echo $b['insertDate']; ?></td>
+                  <td><?php echo $b['eng_name']; ?></td>
+                  <td><?php echo $b['eng_date']; ?></td>
+                  <td><?php echo $b['spv']; ?></td>
+                  <td><?php echo $b['spv_date']; ?></td>
 
-                    <td><?php echo $b['sector']; ?></td>
-                    <td><?php echo $b['total'] ?></td>
-                    <td>US$<?php echo number_format($b['amount'],2,",","."); ?></td>
-                    <td><?php echo $b['action'] ?></td>
-                    <td><?php if ($b['BackFrom'] != 0 || $b['BackFrom'] != '' ){echo $b['BackFrom'] ; } ?></td>
-
-                    <?php
-                    $tresss=MySQL_query("SELECT * FROM tbl_thresholdqty WHERE id=1");
-                    $qty=mysql_fetch_array($tresss);
-
-                    $tressss=MySQL_query("SELECT * FROM tbl_threshold WHERE id_threshold=1");
-                    $amount=mysql_fetch_array($tressss);
-                    ?>
-                    <form class="form-horizontal" action="updAction.php" method="post">
-                    <td>
-                      <input type="hidden" name="ticket" id="ticket" value="<?php echo $b['no_ticket'];?>">
-                      <input type="hidden" name="comment" id="comment" value="-">
-                      <?php if($b['total'] <= $qty['thresholdQty'] && $b['amount'] <= $amount['threshold']){?>
-                      <button type="submit" class="btn btn-success btn-sm" name="approve" id="approve">Approve <i class="fa fa-thumbs-up"></i></button>
-                      <?php }else{?>
-                      <a class="btn btn-success btn-sm" name="approve" id="approve" href="#" data-target="#ModalDetailsCommentApprove" data-whatever="<?php echo $b['no_ticket']; ?>" data-toggle="modal">Approve <i class="fa fa-thumbs-up"></i></a><?php }?>
-                      <a class="btn btn-danger btn-sm" name="reject" id="reject" href="#" data-target="#ModalDetailsCommentReject" data-whatever="<?php echo $b['no_ticket']; ?>"
-                        data-toggle="modal">&nbsp;&nbsp;&nbsp;Reject&nbsp;&nbsp;&nbsp; <i class="fa fa-thumbs-down"></i></a></td>
-                    </form>
-                  </tr>
+                  <td><?php echo $b['mgr_name']; ?></td>
+                  <td><?php echo $b['mgr_date']; ?></td>
+                  <td><?php echo $b['finance_mgr']; ?></td>
+                  <td><?php echo $b['finance_mgrDate']; ?></td>
+                  <td><?php echo $b['sap_admin']; ?></td>
+                  <td><?php echo $b['sector']; ?></td>
+                  <td><?php echo $b['total'] ?></td>
+                  <td>US$<?php echo number_format($b['amount'],2,",","."); ?></td>
+                  <td><?php echo $b['action'] ?></td>
+                  <td>
+                    <a class="btn btn-warning btn-sm" name="approve" id="approve" readonly>APPROVED <i class="fa fa-heart"></i></a></td>
+                </tr>
                 <?php } ?>
-
+              </form>
                 </tbody>
               </table>
             </div>

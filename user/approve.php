@@ -9,23 +9,23 @@ if(isset($_POST['approve'])){
     $info = "Ticket No.".$ticket." Has Approved By ".$_SESSION['name']." at ".$date;
     $change = "Ticket No.".$ticket." Has Update Status From Reject To Approved By ".$_SESSION['name']." at ".$date;
     $com = "Ticket No.".$ticket." Has Update Comments By ".$_SESSION['name']." at ".$date;
-    $check = mysql_query("SELECT mgr_name, mgr_date, mgr_com, mgr_status FROM tbl_approve WHERE no_ticket='$ticket'");
+    $check = mysql_query("SELECT eng_name, eng_date, eng_com, eng_status FROM tbl_approve WHERE no_ticket='$ticket'");
     $res = mysql_fetch_array($check);
 
-    if($res['mgr_com'] == $comment && $res['mgr_status'] == 'Approved'){
+    if($res['spv_com'] == $comment && $res['spv_status'] == 'Approved'){
         header("location: product_reject.php?failed");
     }else{
-        if($res['mgr_name'] == '' || $res['mgr_date'] == '' || $res['mgr_com'] == '' || $res['mgr_status'] == ''){
+        if($res['spv'] == '' || $res['spv_date'] == '' || $res['spv_com'] == '' || $res['spv_status'] == ''){
             $history = mysql_query("INSERT INTO tbl_history VALUES('','".$ticket."','".$info."','".$date."','Approved')");
-        }else if($res['mgr_status'] == 'Reject'){
+        }else if($res['eng_status'] == 'Reject'){
             $history = mysql_query("INSERT INTO tbl_history VALUES('','".$ticket."','".$change."','".$date."','Update Status')");
         }else{
             $history = mysql_query("INSERT INTO tbl_history VALUES('','".$ticket."','".$com."','".$date."','Update Comment')");
         }
 
-        $qry = mysql_query("UPDATE tbl_approve SET mgr_name='".$_SESSION['name']."', mgr_com='".$comment."', mgr_date='".$date."', mgr_status='Approved' WHERE no_ticket='$ticket'");
+        $qry = mysql_query("UPDATE tbl_approve SET spv='".$_SESSION['name']."', spv_com='".$comment."', spv_date='".$date."', spv_status='Approved' WHERE no_ticket='$ticket'");
 
-        header("location: product_reject.php");
+        header("location: product_reject.php?success");
     }
 }
 
