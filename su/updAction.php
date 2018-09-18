@@ -52,6 +52,9 @@ if(isset($_POST['reject'])){
 
         $qry = mysql_query("UPDATE tbl_approve SET spv='".$_SESSION['name']."', spv_com='".$comment."', spv_date='".$date."', spv_status='Reject' WHERE no_ticket='$ticket'");
 
+        //$qry = mysql_query("UPDATE tbl_approve SET spv='',spv_com='',spv_date='',spv_status='Reject', BackFrom = 'CS&Q Manager' , mgr_com = '$comment' WHERE no_ticket='$ticket'");}
+
+
         header("location: product_reject.php?success");
     }
 }

@@ -114,7 +114,8 @@ $es=mysql_fetch_array($check);
                   <td>US$<?php echo number_format($b['amount'],2,",","."); ?></td>
                   <td><?php echo $b['action'] ?></td>
                   <td>
-                    <a class="btn btn-warning btn-sm" name="approve" id="approve" readonly>APPROVED <i class="fa fa-heart"></i></a></td>
+                    <span class="label label-success">APPROVED</span>
+                    </td>
                 </tr>
                 <?php } ?>
               </form>

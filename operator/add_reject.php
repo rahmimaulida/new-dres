@@ -13,7 +13,7 @@ $sector = mysql_query("SELECT sector FROM tbl_users WHERE position='CS&Q Enginee
 $shift = mysql_query("SELECT * FROM shift");
 
 $material = mysql_query("SELECT material_name, material_description FROM tbl_material");
-$tbltemp = mysql_query("SELECT * FROM tempreject_".$_SESSION['username']."");
+$tbltemp = mysql_query("SELECT * FROM tempreject_".$_SESSION['username']." WHERE kapan=now() ");
 
 $reason = mysql_query("SELECT * FROM tbl_deflist") or die(mysql_error());
 //$reason = mysql_query("SELECT material_name, material_description FROM tbl_material");
@@ -110,7 +110,7 @@ if($tbltemp){
                   <select class="form-control selectpicker" data-live-search="true" name="material_description" id="material_description" required>
                   </select>
                 </div>
-              
+
                 <div class="form-group">
                   <label>Qty</label>
                   <input type="number" class="form-control" name="qty" id="qty" min=1 oninput="validity.valid||(value='');" required>
@@ -235,7 +235,7 @@ if($tbltemp){
                         $amount=mysql_fetch_array($tressss);
                         ?>
 
-                        <td hidden><input type="text" value="0" name="pictureValue" id="pictureValue"<?php echo $res['qty']; ?></td>
+                        <td hidden><input type="text" value="0" name="pictureValue" id="pictureValue"></td>
                   </tr>
                 <?php }} else {?>
                   <tr>

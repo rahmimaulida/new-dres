@@ -71,14 +71,14 @@ $es=mysql_fetch_array($check);
                 <tbody>
                 <?php
                   $query=mysql_query("SELECT tbl_prod_reject.no_ticket, tbl_prod_reject.insertDate, tbl_prod_reject.sector,
-                    tbl_prod_reject.insertedBy, SUM(tbl_prod_reject.qty) as total,
+                    tbl_prod_reject.insertedBy, tbl_approve.BackFrom, SUM(tbl_prod_reject.qty) as total,
                   SUM(tbl_prod_reject.amount) as amount, tbl_prod_reject.action, tbl_prod_reject.pic,
                   tbl_approve.mgr_name, tbl_approve.eng_name, tbl_approve.spv, tbl_approve.finance_mgr, tbl_approve.sap_admin,
                   tbl_approve.eng_date, tbl_approve.mgr_date, tbl_approve.spv_date, tbl_approve.finance_mgrDate
                     FROM tbl_prod_reject
                   left join tbl_approve on tbl_approve.no_ticket= tbl_prod_reject.no_ticket
                   WHERE plant='".$tes['plant']."' AND mgr_name ='' AND spv!=''
-                  GROUP BY no_ticket") or die(mysql_error());
+                  GROUP BY spv_date") or die(mysql_error());
                   $jumlah=mysql_num_rows($query);
                   if ($jumlah==0){?><td colspan="17" style="text-align: center;">NO WAITING LIST APPROVAL</td><?php }
                   while($b=mysql_fetch_array($query)){
@@ -91,7 +91,7 @@ $es=mysql_fetch_array($check);
                 $tressss=MySQL_query("SELECT * FROM tbl_threshold WHERE id_threshold=1");
                 $amount=mysql_fetch_array($tressss);
                 ?>
-                <tr class="text-center">
+                <tr class="text-center" <?php if ($b['BackFrom'] != 0 || $b['BackFrom'] != '' ){?>style= "color :red" <?php } ?>>
                   <?php if($b['total'] <= $qty['thresholdQty'] && $b['amount'] <= $amount['threshold']){?>
                   <td><a class="btn btn-warning btn-xs" href="#" data-target="#ModalDetail" data-whatever="<?php echo $b['no_ticket']; ?>"
                     data-toggle="modal"><?php echo $b['no_ticket']; $no_ticket = $b['no_ticket']; ?></a></td>

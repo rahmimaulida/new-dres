@@ -34,7 +34,7 @@
                     <!-- /.box-header -->
                     <div class="box-body">
                         <div class="table-responsive">
-                            <table id="data" class="hover table table-bordered table-striped">
+                            <table id="data" class="hover table table-bordered">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -48,23 +48,26 @@
                             </thead>
                             <tbody>
                                 <?php
+                                $tresss=MySQL_query("SELECT * FROM tbl_thresholdqty WHERE id=1");
+                                $qty=mysql_fetch_array($tresss);
+
+                                $tressss=MySQL_query("SELECT * FROM tbl_threshold WHERE id_threshold=1");
+                                $amount=mysql_fetch_array($tressss);
+
                                 $no = 1;
-                                $i = 0;
                                 $result = MySQL_query("SELECT * FROM tbl_prod_reject WHERE no_ticket = '".$no_ticket."'");
                                 while($res = mysql_fetch_array($result)){ ?>
                                   <?php
-                                  $tresss=MySQL_query("SELECT * FROM tbl_thresholdqty WHERE id=1");
-                                  $qty=mysql_fetch_array($tresss);
 
-                                  $tressss=MySQL_query("SELECT * FROM tbl_threshold WHERE id_threshold=1");
-                                  $amount=mysql_fetch_array($tressss);
 
-                                  $queryy=mysql_query("SELECT SUM(qty) as total, SUM(amount) as amountt
+                                  /*echo $qty['thresholdQty'];
+                                  echo $amount['threshold'];
+                                /*  $queryy=mysql_query("SELECT SUM(qty) as total, SUM(amount) as amountt
                                   FROM tbl_prod_reject") or die(mysql_error());
-                                  $b=mysql_fetch_array($queryy);
+                                  $b=mysql_fetch_array($queryy); */
                                   ?>
-                                  <?php if($b['total'] <= $qty['thresholdQty'] && $b['amountt'] <= $amount['threshold']){?>
-                                    <tr>
+                                  <?php if($res['qty'] > $qty['thresholdQty']){?>
+                                    <tr bgcolor="#ce2121" style="color: white;">
                                         <td><?php echo $no++; ?></td>
                                         <td><?php echo $res['material_name']; ?></td>
                                         <td><?php echo $res['material_description']; ?></td>
@@ -74,7 +77,7 @@
                                         <td>US$<?php echo number_format($res['amount'],2,",","."); ?></td>
                                     </tr>
                                     <?php } else { ?>
-                                      <tr bgcolor="#ce2121">
+                                        <tr>
                                           <td><?php echo $no++; ?></td>
                                           <td><?php echo $res['material_name']; ?></td>
                                           <td><?php echo $res['material_description']; ?></td>

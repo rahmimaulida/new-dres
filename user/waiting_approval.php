@@ -113,7 +113,7 @@ $es=mysql_fetch_array($check);
                     $tressss=MySQL_query("SELECT * FROM tbl_threshold WHERE id_threshold=1");
                     $amount=mysql_fetch_array($tressss);
                     ?>
-                    <form class="form-horizontal" action="updAction.php" method="post">
+                    <form class="form-horizontal" action="approve.php" method="post">
                     <td>
                       <input type="hidden" name="ticket" id="ticket" value="<?php echo $b['no_ticket'];?>">
                       <input type="hidden" name="comment" id="comment" value="-">
@@ -122,7 +122,7 @@ $es=mysql_fetch_array($check);
                       <?php }else{?>
                       <a class="btn btn-success btn-sm" name="approve" id="approve" href="#" data-target="#ModalDetailsCommentApprove" data-whatever="<?php echo $b['no_ticket']; ?>" data-toggle="modal">Approve <i class="fa fa-thumbs-up"></i></a><?php }?>
                       <a class="btn btn-danger btn-sm" name="reject" id="reject" href="#" data-target="#ModalDetailsCommentReject" data-whatever="<?php echo $b['no_ticket']; ?>"
-                        data-toggle="modal">&nbsp;&nbsp;&nbsp;Reject&nbsp;&nbsp;&nbsp; <i class="fa fa-thumbs-down"></i></a></td>
+                        data-toggle="modal">&nbsp;&nbsp;Reject&nbsp;&nbsp; <i class="fa fa-thumbs-down"></i></a></td>
                     </form>
                   </tr>
                 <?php } ?>

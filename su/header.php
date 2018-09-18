@@ -479,7 +479,7 @@ animation: burst 3s infinite linear
       </a>
 
 <?php
-$qry=mysql_query("SELECT * FROM tbl_approve where eng_name='' ");
+$qry=mysql_query("SELECT * FROM tbl_approve where eng_name='' GROUP BY li_name ");
 $num=mysql_num_rows($qry);
 ?>
       <div class="navbar-custom-menu">
@@ -600,7 +600,7 @@ $num=mysql_num_rows($qry);
           </a>
           <ul class="treeview-menu">
             <li><a href="waiting_approval.php"><i class="fa fa-circle-o"></i> Waiting List Approval</a></li>
-            <li><a href="product_reject.php"><i class="fa fa-circle-o"></i> History</a></li>
+            <li><a href="product_reject.php"><i class="fa fa-circle-o"></i> Approval History</a></li>
           </ul>
         </li>
         <li>

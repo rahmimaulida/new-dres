@@ -47,7 +47,7 @@ $es=mysql_fetch_array($check);
                   <th class="text-center"  rowspan="2">Total Reject Qty</th>
                   <th class="text-center" rowspan="2">Total Amount</th>
                   <th class="text-center" rowspan="2">Status</th>
-                  <th class="text-center" rowspan="2">Back From</th>
+                  <th class="text-center" rowspan="2">Rejected By</th>
                   <th class="text-center" rowspan="2">Action</th>
                 </tr>
                 <tr>
@@ -70,7 +70,7 @@ $es=mysql_fetch_array($check);
                     FROM tbl_prod_reject
                   left join tbl_approve on tbl_approve.no_ticket= tbl_prod_reject.no_ticket
                   WHERE  plant='".$tes['plant']."' AND eng_name=''
-                  GROUP BY no_ticket") or die(mysql_error());
+                  GROUP BY li_date") or die(mysql_error());
                   //$jumlah=mysql_num_rows($query);
                   //if ($jumlah==0){?><!--<td colspan="17" style="text-align: center;">NO WAITING LIST APPROVAL</td>--><?php //}
                   while($b=mysql_fetch_array($query)){

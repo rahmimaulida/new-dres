@@ -25,6 +25,13 @@ if(isset($_POST['approve'])){
 
         $qry = mysql_query("UPDATE tbl_approve SET mgr_name='".$_SESSION['name']."', mgr_com='".$comment."', mgr_date=now(), mgr_status='Approved' WHERE no_ticket='$ticket'");
 
+        $t = mysql_query("SELECT sector, position from tbl_users WHERE userId='".$_SESSION['username']."'") or die(mysql_error());
+        $s = mysql_fetch_array($t);
+
+        $url= "product_reject.php";
+        $notif =mysql_query("INSERT INTO tbl_notif (`id_notif`, `PIC`, `link`, `date`, `status`, `position`, `sector`)
+                values('', '".$_SESSION['username']."', '".$url."', now(), 3, 'Finance Manager (Support Function)', '".$s['sector']."')");
+
         header("location: product_reject.php?success");
     }
 }

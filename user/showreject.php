@@ -22,7 +22,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<form role="form" class="form-horizontal" action="updAction.php" method="post">
+<form role="form" class="form-horizontal" action="" method="post">
 	<div class="modal-body">
         <section class="content">
         <div class="row">
@@ -86,103 +86,54 @@
                     <div class="box-body with-border">
                         <ul class="list-group">
                         <?php while($his=mysql_fetch_array($history)){ ?>
-                            <li class="list-group-item"><?php echo $his['information']; ?></li>
+                          <li class="list-group-item">
+                            <span class="label label-danger">Rejected By : </span>
+                            <p style="font-style: italic"><?php echo $his['information']; ?></p>
+
+                            <span class="label label-success">Info : </span>
+                            <p style="font-style: italic"><?php echo $his['code_info']; ?></p>
+
+                            <span class="label label-warning">Date : </span>
+                            <p style="font-weight: bold"><?php echo $his['date']; ?></p>
+
+                            </li>
                         <?php } ?>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <!-- general form elements -->
-                <div class="box box-success">
-                    <div class="box-header with-border box-solid bg-green">
-                        <h3 class="box-title">Approve Flow</h3>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <div class="table-responsive">
-                            <table id="data" class="hover table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Line Inspector</th>
-                                    <th>LI Date</th>
-                                    <th>Engineer</th>
-                                    <th>Eng Date</th>
-                                    <th>Eng Comment</th>
-                                    <th>Eng Status</th>
-                                    <th>Supervisor</th>
-                                    <th>SPV Date</th>
-                                    <th>SPV Comment</th>
-                                    <th>Manager</th>
-                                    <th>Mgr Date</th>
-                                    <th>Mgr Comment</th>
-                                    <th>Mgr Status</th>
-                                    <th>Finance MGR</th>
-                                    <th>Finance MGR Date</th>
-                                    <th>Finance MGR Comment</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            <?php
-                            $result = MySQL_query("SELECT * FROM tbl_approve WHERE no_ticket = '".$no_ticket."'");
-                            while($res = mysql_fetch_array($result)){ ?>
-                                    <tr class="text-center">
-                                        <td><?php echo $res['li_name']; ?></td>
-                                        <td><?php echo $res['li_date']; ?></td>
-                                        <td><?php echo $res['eng_name']; ?></td>
-                                        <td><?php echo $res['eng_date']; ?></td>
-                                        <td><?php echo $res['eng_com']; ?></td>
-                                        <td><?php echo $res['eng_status']; ?></td>
-                                        <td><?php echo $res['spv']; ?></td>
-                                        <td><?php echo $res['spv_date']; ?></td>
-                                        <td><?php echo $res['spv_com']; ?></td>
-                                        <td><?php echo $res['mgr_name']; ?></td>
-                                        <td><?php echo $res['mgr_date']; ?></td>
-                                        <td><?php echo $res['mgr_com']; ?></td>
-                                        <td><?php echo $res['mgr_status']; ?></td>
-                                        <td><?php echo $res['finance_mgr']; ?></td>
-                                        <td><?php echo $res['finance_mgrDate']; ?></td>
-                                        <td><?php echo $res['finance_mgrCom']; ?></td>
-                                    </tr>
-                                <?php } ?>
-                            </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <!-- /.box -->
-            </div>
-        </div>
 
-        <div class="row">
+        <!--<div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <!-- general form elements -->
-                <div class="box box-success">
+              <!--  <div class="box box-success">
                     <div class="box-header with-border box-solid bg-green">
                         <h3 class="box-title">Comment</h3>
                     </div>
                     <!-- /.box-header -->
-                    <div class="box-body">
+                <!--    <div class="box-body">
                         <div class="col-md-12">
-                            <input type="hidden" name="ticket" id="ticket" value="<?php echo $no_ticket; ?>">
-                            <textarea class="form-control" minlength="11" rows="4" name="comment" id="comment" required <?php if($tes['mgr_status'] == 'Approved' || $tes['eng_status'] == ''){echo 'readonly';}?>><?php echo $res['eng_com']; ?></textarea>
+                            <input type="hidden" name="ticket" id="ticket" value="<?php// echo $no_ticket; ?>">
+                            <textarea class="form-control" minlength="11" rows="4" name="comment" id="comment" required <?php //if($tes['mgr_status'] == 'Approved' || $tes['eng_status'] == ''){echo 'readonly';}?>><?php //echo $res['eng_com']; ?></textarea>
                         </div>
                     </div>
                 </div>
                 <!-- /.box -->
-            </div>
+            <!--</div>
         </div>
+      -->
         </section>
     </div>
-    <div class="modal-footer">
-      <?php if($tes['mgr_status'] != 'Approved' || $tes['eng_status'] == ''){?>
+  <!--  <div class="modal-footer">
+      <?php //if($tes['mgr_status'] != 'Approved' || $tes['eng_status'] == ''){?>
           <button type="submit" class="btn btn-success" name="approve"><i class="fa fa-thumbs-up"></i> Approve</button>
           <button type="submit" class="btn btn-danger" name="reject"><i class="fa fa-thumbs-down"></i> Reject</button>
-      <?php } ?>
+      <?php //} ?>
         <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+
     </div>
+  -->
 	</form>
 </body>
 <style>

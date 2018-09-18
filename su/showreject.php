@@ -10,7 +10,7 @@
     $com = mysql_query("SELECT eng_com FROM tbl_approve WHERE no_ticket='$no_ticket'");
     $tes = mysql_fetch_array($com);
 ?>
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -86,7 +86,17 @@
                     <div class="box-body with-border">
                         <ul class="list-group">
                         <?php while($his=mysql_fetch_array($history)){ ?>
-                            <li class="list-group-item"><?php echo $his['information']; ?></li>
+                            <li class="list-group-item">
+                              <span class="label label-danger">Rejected By : </span>
+                              <p style="font-style: italic"><?php echo $his['information']; ?></p>
+
+                              <span class="label label-success">Info : </span>
+                              <p style="font-style: italic"><?php echo $his['code_info']; ?></p>
+
+                              <span class="label label-warning">Date : </span>
+                              <p style="font-weight: bold"><?php echo $his['date']; ?></p>
+
+                              </li>
                         <?php } ?>
                         </ul>
                     </div>

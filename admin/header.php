@@ -456,7 +456,20 @@ animation: burst 1s infinite linear
 .faa-parent.animated-hover:hover > .faa-burst.faa-slow {
 animation: burst 3s infinite linear
 }
-
+.blink {
+    animation: blink 2s steps(5, start) infinite;
+    -webkit-animation: blink 1s steps(5, start) infinite;
+  }
+  @keyframes blink {
+    to {
+      visibility: hidden;
+    }
+  }
+  @-webkit-keyframes blink {
+    to {
+      visibility: hidden;
+    }
+  }
   </style>
 </head>
 <body class="hold-transition skin-green sidebar-mini sidebar-collapse">
@@ -477,7 +490,7 @@ animation: burst 3s infinite linear
         <span class="sr-only">Toggle navigation</span>
       </a>
       <?php
-      $qry=mysql_query("SELECT * FROM tbl_approve where mgr_name='' AND spv!='' ");
+      $qry=mysql_query("SELECT * FROM tbl_approve where mgr_name='' AND spv!='' GROUP BY spv_date ");
       $num=mysql_num_rows($qry);
       ?>
       <div class="navbar-custom-menu">
@@ -495,7 +508,7 @@ animation: burst 3s infinite linear
                 <ul class="menu">
                 <?php while($res=mysql_fetch_array($qry)){ ?>
                   <li><!-- start message -->
-                    <a href="notif_waiting_approval.php?ticket=<?php echo $res['no_ticket']?>">
+                    <a href="product_reject.php?ticket=<?php echo $res['no_ticket']?>">
                       <div class="pull-left">
                       <img src="../assets/image/header.png" class="user-image" alt="User Image" style="background-color: white;">
                       </div>
@@ -524,7 +537,7 @@ animation: burst 3s infinite linear
           ?>
           <li class="dropdown notifications-menu" >
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-fw fa-flag faa-ring animated"></i>
+              <i class="fa fa-fw fa-flag blink animated"></i>
               <span class="label label-danger"><?php echo $jumlah; ?></span>
             </a>
             <ul class="dropdown-menu" style="width: 450px">
@@ -636,7 +649,7 @@ animation: burst 3s infinite linear
           </a>
           <ul class="treeview-menu">
             <li><a href="product_reject.php"><i class="fa fa-circle-o"></i> Waiting List Approval</a></li>
-            <li><a href="execution_approval.php"><i class="fa fa-circle-o"></i> Approved List</a></li>
+            <li><a href="execution_approval.php"><i class="fa fa-circle-o"></i> Approval History</a></li>
             <li><a href="history_approval.php"><i class="fa fa-circle-o"></i> History</a></li>
           </ul>
         </li>

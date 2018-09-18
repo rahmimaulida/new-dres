@@ -469,7 +469,7 @@ animation: burst 3s infinite linear
         <span class="sr-only">Toggle navigation</span>
       </a>
       <?php
-      $qry=mysql_query("SELECT * FROM tbl_approve where spv='' ");
+      $qry=mysql_query("SELECT * FROM tbl_approve where spv='' ORDER BY eng_date");
       $num=mysql_num_rows($qry);
       ?>
       <div class="navbar-custom-menu">

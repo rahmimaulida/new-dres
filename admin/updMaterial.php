@@ -1,8 +1,8 @@
 <?php
     session_start();
-    include('../config.php'); 
+    include('../config.php');
     $id_material = $_GET['id'];
- 
+
     if (isset($_POST['submit'])) {
         $id_material=$_POST['id_material'];
     	$material_name=$_POST['material_name'];
@@ -21,7 +21,7 @@
     $result = mysql_query($qry);
 
     $b = mysql_fetch_array($result);
- 
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,7 +30,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Using Bootstrap modal</title>
- 
+
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="../assets/bower_components/bootstrap/dist/css/bootstrap.min.css">
 </head>
@@ -57,7 +57,7 @@
                       <input type="text" class="form-control" name="product_family" id="product_family" placeholder="Insert Product Family" value="<?php echo $b['product_family']; ?>" required>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" hidden>
                     <label for="price" class="col-sm-2 control-label">Price</label>
 
                     <div class="col-sm-10">

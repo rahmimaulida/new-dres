@@ -3,12 +3,12 @@
     include('../config.php');
     $no_ticket = $_GET['id'];
 
-    $history = MySQL_query("SELECT * FROM tbl_history WHERE no_ticket='$no_ticket' ORDER BY id_history DESC");
+    $history = MySQL_query("SELECT * FROM tbl_history WHERE no_ticket='$no_ticket' ORDER BY `id_history` DESC");
+    $check = mysql_query("SELECT mgr_status FROM tbl_approve WHERE no_ticket='$no_ticket'");
+    $try = mysql_fetch_array($check);
 
-    $com = mysql_query("SELECT * FROM tbl_approve WHERE no_ticket='$no_ticket'");
+    $com = mysql_query("SELECT eng_com FROM tbl_approve WHERE no_ticket='$no_ticket'");
     $tes = mysql_fetch_array($com);
-  //  $tes = mysql_fetch_array($com);
-    //$com1 = mysql_query("SELECT mgr_com FROM tbl_approve WHERE no_ticket='$no_ticket'")
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,10 +41,8 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Material</th>
-                                    <th>Material Description</th>
                                     <th>Sector</th>
                                     <th>Qty</th>
-                                    <th>Reason</th>
                                     <th>Price</th>
                                     <th>Amount</th>
                                     <th>Action</th>
@@ -58,16 +56,16 @@
                             while($res = mysql_fetch_array($result)){ ?>
                                     <tr>
                                         <td><?php echo $no++; ?></td>
-                                        <td><?php echo $res['material_name'];?></td>
-                                        <td><?php echo $res['material_description'];?></td>
+                                        <td><?php echo $res['material_name']; ?></td>
                                         <td><?php echo $res['sector']; ?></td>
                                         <td><?php echo $res['qty']; ?></td>
-                                        <td><?php echo $res['issue']; ?></td>
                                         <td>US$<?php echo number_format(($res['amount'] / $res['qty']),2,",","."); ?></td>
                                         <td>US$<?php echo number_format($res['amount'],2,",","."); ?></td>
                                         <td>
-                                            <a class="btn btn-warning" href="#" data-target="#ModalUpdate" data-whatever="<?php echo $res['id_reject']; ?>" data-toggle="modal"><i class="fa fa-edit"></i></a>
-                                            <?php echo "<a class='btn btn-danger' data-toggle='modal' data-target='#del_confirm' data-href='delitem.php?id=".$res['id_reject']."&ticket=".$res['no_ticket']."&mat=".$res['material_name']."'><i class='fa fa-trash'></i></a>"; ?>
+                                        <?php if($try['mgr_status'] == '' || $try['mgr_status'] == 'Reject'){  ?>
+                                                <a class="btn btn-warning" href="#" data-target="#ModalUpdate" data-whatever="<?php echo $res['id_reject']; ?>" data-toggle="modal"><i class="fa fa-edit"></i></a>
+                                                <?php echo "<a class='btn btn-danger' data-toggle='modal' data-target='#del_confirm' data-href='delitem.php?id=".$res['id_reject']."&ticket=".$res['no_ticket']."&mat=".$res['material_name']."'><i class='fa fa-trash'></i></a>"; ?>
+                                            <?php }else{ echo "Not Available"; } ?>
                                         </td>
                                     </tr>
                                 <?php } ?>
@@ -86,56 +84,31 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body with-border">
-                      <div class="table-responsive">
-                          <table id="data" class="hover table table-bordered table-striped">
-                          <thead>
-                              <tr>
-                                  <th>Date</th>
-                                  <th>Name</th>
-                                  <th>Comment</th>
-                              </tr>
-                          </thead>
-                          <tbody>
+                        <ul class="list-group">
+                        <?php while($his=mysql_fetch_array($history)){ ?>
                             <li class="list-group-item">
-                        <?php
-                        $com = mysql_query("SELECT * FROM tbl_approve WHERE no_ticket='$no_ticket'");
-                        while($tes=mysql_fetch_array($com)){ ?>
-                              <tr>
-                                  <td><?php echo $tes['mgr_date']; ?></td>
-                                  <td><?php echo $tes['mgr_name']; ?></td>
-                                  <td><?php echo $tes['mgr_com']; ?></td>
-                                </tr>
+                              <span class="label label-danger">Rejected By : </span>
+                              <p style="font-style: italic"><?php echo $his['information']; ?></p>
+
+                              <span class="label label-success">Info : </span>
+                              <p style="font-style: italic"><?php echo $his['code_info']; ?></p>
+
+                              <span class="label label-warning">Date : </span>
+                              <p style="font-weight: bold"><?php echo $his['date']; ?></p>
+
+                              </li>
                         <?php } ?>
-                        </li>
-                      </tbody>
-                    </table>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="box box-success">
-                <div class="box-header with-border box-solid bg-green">
-                    <h3 class="box-title">Picture</h3>
-                </div>
 
-                <?php
-                $sql=mysql_query("select gambar from tbl_approve where no_ticket= $no_ticket");
-                $tampilkan = mysql_fetch_array($sql);
-                  ?>
-                <!-- /.box-header -->
-                <center>
-                  <td><img src="../assets/img/<?php echo $tampilkan['gambar']?>" width="150px" height="120px"/></td>
-                </center>
-                  <!--<img src="<?php// echo $tampilkan['']; ?>" width="150px" height="150px"/></center> -->
-        </div>
-    </div>
         </section>
     </div>
-
+    
 	</form>
 </body>
-
 <style>
     .list-group{
         max-height: 300px;
@@ -145,13 +118,38 @@
     }
 </style>
 <script>
-
-    $(function () {
+$(function () {
     $('#data').DataTable({
       "bLengthChange": false,
       "pageLength": 5
     })
   })
-
 </script>
+
+<!--
+<script>
+$(document).ready(function() {
+    <?php if($tes['eng_com'] == ''){?>
+        $('button[type="submit"]').attr('disabled' , true);
+    <?php }else if($tes['eng_com'] != ''){?>
+    <?php } ?>
+$('textarea').on('keyup',function()
+{
+    var textarea_val = $("#comment").val();
+
+    var minLength = $("#comment").attr( 'minlength' );
+
+    if(textarea_val != '' && textarea_val.length >= minLength)
+    {
+        $('button[type="submit"]').attr('disabled' , false);
+    }
+    else
+    {
+        $('button[type="submit"]').attr('disabled' , true);
+    }
+});
+
+});
+
+</script>-->
 </html>

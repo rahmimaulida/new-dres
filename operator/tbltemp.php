@@ -38,7 +38,7 @@
                     <td>US$<?php echo number_format(($res['amount'] / $res['qty']),2,",","."); ?></td>
                     <td>US$<?php echo number_format($res['amount'],2,",","."); ?></td>
                     <td><button class="btn btn-danger del-data" id="<?php echo $res['id_reject']; ?>"><i class="fa fa-trash"></i></button></td>
-                    <td><input type="hidden" value="<?php echo $res['pic']; ?>" name="picName" id="picName"></td>
+                    <td hidden><input type="hidden" value="<?php echo $res['pic']; ?>" name="picName" id="picName"></td>
                     <td>
 
                       <br>
@@ -112,11 +112,13 @@
                   <input type=button value="Take Snapshot" onClick="take_snapshot()" class="btn btn-lg btn-warning btn-sm">
                 </form>
               -->
+              <center>
               <br>
               <br>
                 <form action="save_reject.php" method="post">
                   <button type="submit" name="submit" class="btn btn-lg btn-success"><i class="fa fa-save"></i> Save</button>
                 </form>
+              </center>
                 <!--
                 <script language="JavaScript">
                   function take_snapshot(results_photo) {

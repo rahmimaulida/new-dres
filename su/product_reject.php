@@ -18,7 +18,7 @@ $es=mysql_fetch_array($check);
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
         <li><a href="#">Product Reject</a></li>
-        <li class="active">List Approved Product</li>
+        <li class="active">List Approved History</li>
       </ol>
     </section>
 
@@ -28,7 +28,7 @@ $es=mysql_fetch_array($check);
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header with-border box-solid bg-green">
-              <h3 class="box-title">List Approved Product</h3>
+              <h3 class="box-title">List Approved History</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -106,7 +106,8 @@ $es=mysql_fetch_array($check);
                   $amount=mysql_fetch_array($tressss);
                   ?>
                   <td>
-                    <a class="btn btn-warning btn-sm" readonly>APPROVED <i class="fa fa-heart"></i></a></td>
+                    <span class="label label-success">APPROVED</span>
+                  </td>
                 </tr>
                 <?php } ?>
               </form>

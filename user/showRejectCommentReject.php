@@ -8,7 +8,7 @@
 
     $t = mysql_query("SELECT sector, position from tbl_users WHERE userId='".$_SESSION['username']."'") or die(mysql_error());
     $s = mysql_fetch_array($t);
-    $alternate = mysql_query("SELECT * FROM tbl_users WHERE position='Supervisor (Support Function)' OR position='CS&Q Engineer' AND sector='".$s['sector']."'") or die(mysql_error());
+    $alternate = mysql_query("SELECT * FROM tbl_users WHERE  position='CS&Q Engineer' AND sector='".$s['sector']."'") or die(mysql_error());
 
     $history = MySQL_query("SELECT * FROM tbl_history WHERE no_ticket='$no_ticket' ORDER BY id_history DESC");
 
@@ -51,7 +51,7 @@
                           <div class="form-group">
                             <input type="hidden" name="ticket" id="ticket" value="<?php echo $no_ticket; ?>">
                             <input type="hidden" name="reject" id="reject" value="Reject">
-                            <textarea class="form-control" rows="4" name="comment" minlength=15 id="comment" required <?php if($tes['spv'] == 'Approved' || $tes['eng_status'] == '' ){echo 'readonly';}?>><?php echo $tes['mgr_com']; ?></textarea>
+                            <textarea class="form-control" rows="4" name="comment" minlength=15 id="comment" required <?php if($tes['spv'] == 'Approved' || $tes['eng_status'] == '' ){echo 'readonly';}?>><?php echo $tes['spv_com']; ?></textarea>
                           </div>
                       </div>
                     </div>
@@ -85,27 +85,6 @@
     })
   })
 
-
-$(function() {
-  $("#backTo").change(function(){
-      var tf = $(this).val();
-// alert(grp);
-      $.ajax({
-          type: "POST",
-          dataType: "html",
-          url: "get_alt_id.php",
-          data: "data="+tf,
-          success: function(msg){
-              if(msg == ''){
-                      $("select#id_name").html('<option disabled selected value=""> -- select an option -- </option>');
-
-              }else{ //alert(msg);
-                        $("select#id_name").html(msg).selectpicker('refresh');
-              }
-          }
-      });
-    });
-});
 
 </script>
 <script type="text/javascript">

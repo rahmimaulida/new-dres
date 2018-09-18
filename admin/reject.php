@@ -27,10 +27,16 @@ if(isset($_POST['reject'])){
         }
 
         if ($backto=='Supervisor (Support Function)'){
-        $qry = mysql_query("UPDATE tbl_approve SET spv='',spv_com='',spv_date='',spv_status='Reject', BackFrom = 'CS&Q Manager' , mgr_com = '$comment' WHERE no_ticket='$ticket'");}
+        $qry = mysql_query("UPDATE tbl_approve SET spv='',spv_com='',spv_date='',spv_status='Reject', BackFrom = 'CS&Q Manager - $userku' , mgr_com = '$comment' WHERE no_ticket='$ticket'");}
         elseif ($backto=='CS&Q Engineer'){
-        $qry = mysql_query("UPDATE tbl_approve SET spv='',spv_com='',spv_date='',spv_status='reject',eng_name='',eng_com='',eng_date='',eng_status='reject', BackFrom = 'CS&Q Manager' , mgr_com = '$comment' WHERE no_ticket='$ticket'");}
+        $qry = mysql_query("UPDATE tbl_approve SET spv='',spv_com='',spv_date='',spv_status='reject',eng_name='',eng_com='',eng_date='',eng_status='reject', BackFrom = 'CS&Q Manager - $userku' , mgr_com = '$comment' WHERE no_ticket='$ticket'");}
 
+        $t = mysql_query("SELECT sector, position from tbl_users WHERE userId='".$_SESSION['username']."'") or die(mysql_error());
+        $s = mysql_fetch_array($t);
+
+        $url= "waiting_approval.php";
+        $notif =mysql_query("INSERT INTO tbl_notif (`id_notif`, `PIC`, `link`, `date`, `status`, `position`, `sector`)
+                values('', '".$_SESSION['username']."', '".$url."', now(), 23, 'Supervisor (Support Function)', '".$s['sector']."')");
         header("location: product_reject.php");
     }
 }
