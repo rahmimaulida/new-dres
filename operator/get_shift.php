@@ -1,7 +1,7 @@
 <?php
   session_start();
   include ('../config.php');
-  $tbltemp = mysql_query("SELECT * FROM tempreject_".$_SESSION['username']."");
+  $tbltemp = mysql_query("SELECT * FROM tempreject_".$_SESSION['username']." WHERE shift= data");
   $numtbl = 0;
   if($tbltemp){
     $numtbl = mysql_num_rows($tbltemp);
@@ -82,7 +82,7 @@
                   <?php }}else {?>
                   <tr>
                     <script type="text/javascript" src="../webcam/webcam.min.js"></script>
-                    <td colspan="11" class="text-center">DATA NOT FOUND</td>
+                    <td colspan="7" class="text-center">DATA NOT FOUND</td>
                   </tr>
                   <?php } ?>
                 </tbody>

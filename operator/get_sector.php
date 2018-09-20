@@ -11,6 +11,7 @@ $result = mysql_query($qry);
 while( $ret = mysql_fetch_array( $result ) )
 {
 	echo "<option value='".$ret['name']."'>".$ret['name']."</option>";
+	include "tbltemp.php";
 
 }
 ?>

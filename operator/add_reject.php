@@ -13,7 +13,7 @@ $sector = mysql_query("SELECT sector FROM tbl_users WHERE position='CS&Q Enginee
 $shift = mysql_query("SELECT * FROM shift");
 
 $material = mysql_query("SELECT material_name, material_description FROM tbl_material");
-$tbltemp = mysql_query("SELECT * FROM tempreject_".$_SESSION['username']." WHERE kapan=now() ");
+$tbltemp = mysql_query("SELECT * FROM tempreject_".$_SESSION['username']."");
 
 $reason = mysql_query("SELECT * FROM tbl_deflist") or die(mysql_error());
 //$reason = mysql_query("SELECT material_name, material_description FROM tbl_material");
@@ -35,7 +35,17 @@ if($tbltemp){
   $numtbl = mysql_num_rows($tbltemp);
 }
 
+$sc= "D-";
+$plantCode= mysql_query("SELECT * from tbl_masterdata");
+$sectorName= mysql_query("SELECT * from tbl_sector");
+
+$thnBlnTgl= mysql_query("SELECT insertDate from tbl_prod_reject");
+
+$subSector= substr($sectorName['sector'], 0, 2);
+
+
 ?>
+
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -59,7 +69,7 @@ if($tbltemp){
           <!-- general form elements -->
           <div class="box box-success">
             <div class="box-header box-solid bg-green with-border">
-              <h3 class="box-title">Input Reject Item</h3>
+              <h3 class="box-title">Input Reject Item <?php echo $subSector; ?></h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
@@ -67,11 +77,11 @@ if($tbltemp){
               <div class="box-body">
                 <div class="form-group">
                   <label for="Date of Reject">Date of Reject</label>
-                    <input type="text" class="form-control" name="when" id="when" placeholder="Insert When" value="<?php echo date('Y-m-d'); ?>" required>
+                    <input type="text" class="form-control selectpicker" data-live-search="true" name="when" id="when" placeholder="Insert When" value="<?php echo date('Y-m-d'); ?>" required>
                 </div>
                 <div class="form-group">
                   <label>Shift</label>
-                  <select class="form-control selectpicker" name="shift" id="shift" required>
+                  <select class="form-control selectpicker" name="shift" id="shift" data-live-search="true" required>
                     <option disabled selected>Select Shift...</option>
                     <?php while($shiftRES=mysql_fetch_array($shift)){?>
                       <option value="<?php echo $shiftRES['id_shift']; ?>"><?php echo $shiftRES['shift']; ?></option>
@@ -192,7 +202,6 @@ if($tbltemp){
                     <td><button class="btn btn-danger del-data" id="<?php echo $res['id_reject']; ?>"><i class="fa fa-trash"></i></button></td>
                     <td hidden><input type="text" value="<?php echo $res['pic']; ?>" name="picName" id="picName"></td>
                     <td>
-
                       <br>
                         <center><div id="my_camera<?php echo $no; ?>"></div>
                           <br>
@@ -217,8 +226,6 @@ if($tbltemp){
                         function take_snapshot(results_photo, id) {
                           // take snapshot and get image data
                           Webcam.snap( function(data_uri) {
-                            // display results in page
-
                             Webcam.upload( data_uri, 'saveimage.php?id='+id, function(code, text) {
                             document.getElementById(results_photo).innerHTML =
                               '<img src="'+data_uri+'"/>';
@@ -230,16 +237,14 @@ if($tbltemp){
                         <?php
                         $tresss=MySQL_query("SELECT * FROM tbl_thresholdqty WHERE id=1");
                         $qty=mysql_fetch_array($tresss);
-
                         $tressss=MySQL_query("SELECT * FROM tbl_threshold WHERE id_threshold=1");
                         $amount=mysql_fetch_array($tressss);
                         ?>
-
                         <td hidden><input type="text" value="0" name="pictureValue" id="pictureValue"></td>
                   </tr>
                 <?php }} else {?>
                   <tr>
-                    <td class="text-center" colspan="7">DATA NOT FOUND</td>
+                    <td class="text-center" colspan="11">DATA NOT FOUND</td>
                   </tr>
                   <?php }
                   ?>
@@ -328,9 +333,10 @@ $(document).ready(function () {
 
   $(function () {
     $('.selectpicker').selectpicker();
+
     $('#table').DataTable({
       "bLengthChange": false
-    })
+    });
   })
 
   $(document).ready(function()
@@ -446,6 +452,24 @@ $(document).ready(function () {
         });
       });
   });
+
+  $(function() {
+    $("#shift").change(function(){
+        var tf = $(this).val();
+  // alert(grp);
+        $.ajax({
+            type: "POST",
+            dataType: "html",
+            url: "get_shift.php",
+            data: "data="+tf,
+            success: function(msg){
+                
+            }
+        });
+      });
+  });
+
+
 
   $(function() {
     $("#issue").change(function(){

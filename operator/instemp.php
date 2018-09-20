@@ -8,6 +8,14 @@ $fetch = mysql_fetch_array($get);
 $getprice = mysql_query("SELECT `price` from tbl_material WHERE `material_name`='".$_POST['material_name']."'");
 $fetchprice = mysql_fetch_array($getprice);
 
+$sc= "D-";
+$plantCode= mysql_query("SELECT * from tbl_masterdata");
+$sectorName= mysql_query("SELECT * from tbl_sector");
+$thnBlnTgl= mysql_query("SELECT insertDate from tbl_prod_reject");
+
+$subSector= substr($sectorName['name'], 3, 15);
+echo $subSector;
+
 $id_reject = "";
 $material_name = $_POST['material_name'];
 $material_description = $_POST['material_description'];
