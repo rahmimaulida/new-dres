@@ -3,8 +3,9 @@ session_start();
 include('../config.php');
 
 $id = $_GET['id'];
+
 $ticket = $_GET['ticket'];
-$material = $_GET['mat'];
+$material = $_GET['material'];
 $date = date("Y-m-d h:i:s");
 $info = "Material ".$material." Has Been Deleted By ".$_SESSION['name']." At ".$date;
 

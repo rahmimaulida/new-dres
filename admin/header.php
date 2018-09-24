@@ -471,6 +471,13 @@ animation: burst 3s infinite linear
     }
   }
   </style>
+  <script type="text/javascript">
+      function blinker() {
+          $('.blink_me').fadeOut(500);
+          $('.blink_me').fadeIn(500);
+      }
+      setInterval(blinker, 1000);
+    </script>
 </head>
 <body class="hold-transition skin-green sidebar-mini sidebar-collapse">
 <div class="wrapper">
@@ -498,8 +505,13 @@ animation: burst 3s infinite linear
           <!-- Messages: style can be found in dropdown.less-->
           <li class="dropdown messages-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <?php if($num>0) { ?>
               <i class="fa fa-fw fa-bell faa-ring animated"></i>
-              <span class="label label-warning"><?php echo $num;?></span>
+              <span class="label label-warning blink_me"><?php echo $num;?></span>
+              <?php } else { ?>
+                <i class="fa fa-bell-o"></i>
+                <span class="label label-warning"><?php echo $num ?></span>
+                <?php } ?>
             </a>
             <ul class="dropdown-menu">
               <li class="header">You have <?php echo $num;?> notification</li>
@@ -537,8 +549,18 @@ animation: burst 3s infinite linear
           ?>
           <li class="dropdown notifications-menu" >
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+
+              <?php if($num>0) { ?>
               <i class="fa fa-fw fa-flag blink animated"></i>
-              <span class="label label-danger"><?php echo $jumlah; ?></span>
+              <span class="label label-danger blink_me"><?php echo $jumlah; ?></span>
+              <?php } else { ?>
+                <i class="fa fa-fw fa-flag"></i>
+                <span class="label label-danger"><?php echo $jumlah ?></span>
+                <?php } ?>
+<!--
+              <i class="fa fa-fw fa-flag blink animated"></i>
+              <span class="label label-danger"><?php// echo $jumlah; ?></span>
+            -->
             </a>
             <ul class="dropdown-menu" style="width: 450px">
               <li class="header">You have <?php echo $jumlah; ?> Delete Propose</li>
@@ -552,11 +574,11 @@ animation: burst 3s infinite linear
                       $id = $b['id_reject'];
                       $material = $b['material_name'];?>
                   <li>
-                    <a>
-                      <i class="fa fa-warning text-yellow"></i> Some Material on Ticket <?php echo $no_ticket; ?> need approval to delete ||
-                      <button class="btn btn-info btn-xs" onclick="window.location.href='showDelete.php?ticket=<?php echo $no_ticket?>&id=<?php echo $id?>&material=<?php echo $material?>'"><i class="fa fa-eye "></i></button>
-                      <button class="btn btn-danger btn-xs" onclick="window.location.href='delitem.php?ticket=<?php echo $no_ticket?>&id=<?php echo $id?>&material=<?php echo $material?>'"><i class="fa fa-trash "></i></button>
-                      <button class="btn btn-warning btn-xs" onclick="window.location.href='delitem-cancel.php?ticket=<?php echo $no_ticket?>&id=<?php echo $id?>&material=<?php echo $material?>'"><i class="fa fa-times "></i></button>
+                    <a href="showDelete.php?ticket=<?php echo $no_ticket;?>&id=<?php echo $id; ?>&material=<?php echo $material; ?>">
+
+                      <i class="fa fa-warning text-yellow"></i> Some Materials on Ticket <?php echo $no_ticket; ?> need approval to delete
+
+
                     </a>
                   </li>
                 <?php } ?>

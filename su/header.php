@@ -449,7 +449,13 @@ animation: burst 3s infinite linear
 }
 
   </style>
-
+  <script type="text/javascript">
+      function blinker() {
+          $('.blink_me').fadeOut(500);
+          $('.blink_me').fadeIn(500);
+      }
+      setInterval(blinker, 1000);
+    </script>
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -479,7 +485,7 @@ animation: burst 3s infinite linear
       </a>
 
 <?php
-$qry=mysql_query("SELECT * FROM tbl_approve where eng_name='' GROUP BY li_name ");
+$qry=mysql_query("SELECT * FROM tbl_approve where eng_name='' ORDER BY li_date DESC");
 $num=mysql_num_rows($qry);
 ?>
       <div class="navbar-custom-menu">
@@ -487,11 +493,16 @@ $num=mysql_num_rows($qry);
           <!-- Messages: style can be found in dropdown.less-->
           <li class="dropdown messages-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <?php if($num>0) { ?>
               <i class="fa fa-fw fa-bell faa-ring animated"></i>
-              <span class="label label-warning"><?php echo $num;?></span>
+              <span class="label label-warning blink_me"><?php echo $num;?></span>
+              <?php } else { ?>
+                <i class="fa fa-bell-o"></i>
+                <span class="label label-warning"><?php echo $num ?></span>
+                <?php } ?>
             </a>
             <ul class="dropdown-menu">
-              <li class="header">You have <?php echo $num;?> notification</li>
+              <li class="header">You have <?php echo $num;?> notifications</li>
               <li>
                 <!-- inner menu: contains the actual data -->
                 <ul class="menu">

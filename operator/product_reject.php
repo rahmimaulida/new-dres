@@ -8,7 +8,7 @@ $tes = mysql_fetch_array($qry);
 
 $check=MySQL_query("SELECT eng_status, mgr_status, spv_status, finance_mgrStatus FROM tbl_approve WHERE no_ticket='$no_ticket'");
 $es=mysql_fetch_array($check);
-$history = MySQL_query("SELECT * FROM tbl_history WHERE information LIKE '%".$_SESSION['name']."%' ORDER BY `id_history` DESC");
+$history = MySQL_query("SELECT * FROM tbl_history WHERE information LIKE '%".$_SESSION['name']."%' ORDER BY `date` DESC");
 ?>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">

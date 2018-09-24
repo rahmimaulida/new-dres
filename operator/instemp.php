@@ -43,13 +43,12 @@ if($tbl !== FALSE){
         $amountget = $res['amount'] + $amount;
         $update = mysql_query("UPDATE tempreject_".$_SESSION['username']." SET qty='".$allget."', amount='".$amountget."' WHERE material_name = '".$material_name."'");
     }else{
-        $insert = mysql_query("INSERT INTO tempreject_".$_SESSION['username']." VALUES('".$id_reject."','".$material_name."' ,'".$material_description."','".$qty."','".$plant."','".$sector."','".$line."','".$issue."','".$amount."','".$action."','".$status."','".$pic."', '".$insertedBy."', '".$when."','".$shift."','')") or die(mysql_error());
+        $insert = mysql_query("INSERT INTO tempreject_".$_SESSION['username']." VALUES('".$id_reject."','".$material_name."' ,'".$material_description."','".$qty."','".$plant."','".$sector."','".$line."','".$issue."','".$amount."','".$action."','".$status."','".$pic."', '".$insertedBy."', '".$when."','".$shift."','');") or die(mysql_error());
     }
 
 }else{
-    $maketbl = "CREATE TABLE `tempreject_".$_SESSION['username']."`(`id_reject` int(11) AUTO_INCREMENT PRIMARY KEY,`material_name` varchar(100) ,`material_description` varchar(75), `qty` int(11),`plant` varchar(6), `sector` varchar(30), `line` varchar(100), `issue` text, `amount` double, `action` varchar(5), `status` varchar(25), `pic` varchar(128), `insertedBy` varchar(128), `kapan` date, `shift` int(11), `gambar` varchar(255))";
-    $tbltemp = mysql_query($maketbl) or die(mysql_error());
-    $insert = mysql_query("INSERT INTO tempreject_".$_SESSION['username']." VALUES('".$id_reject."','".$material_name."' ,'".$material_description."','".$qty."','".$plant."','".$sector."','".$line."','".$issue."','".$amount."','".$action."','".$status."','".$pic."','".$insertedBy."', '".$when."', '".$shifr."')") or die(mysql_error());
+    $maketbl = MySQL_query("CREATE TABLE `tempreject_".$_SESSION['username']."`(`id_reject` int(11) AUTO_INCREMENT PRIMARY KEY,`material_name` varchar(100) ,`material_description` varchar(75), `qty` int(11),`plant` varchar(6), `sector` varchar(30), `line` varchar(100), `issue` text, `amount` DOUBLE, `action` varchar(5), `status` varchar(25), `pic` varchar(128), `insertedBy` varchar(128), `kapan` date, `shift` int(11), `gambar` varchar(255));");
+    $insert = mysql_query("INSERT INTO `tempreject_".$_SESSION['username']."` VALUES('".$id_reject."','".$material_name."' ,'".$material_description."','".$qty."','".$plant."','".$sector."','".$line."','".$issue."','".$amount."','".$action."','".$status."','".$pic."','".$insertedBy."', '".$when."', '".$shift."');") or die(mysql_error());
 }
 
 ?>

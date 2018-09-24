@@ -8,7 +8,7 @@
   }
 ?>
 <div class="table-responsive">
-<table id="table" class="table table-stripes">
+<table id="example" class="table table-stripes">
                 <thead>
                   <tr>
                     <th>No</th>
@@ -20,7 +20,8 @@
                     <th>Amount</th>
                     <th>Action</th>
                     <th hidden>pic</th>
-                    <th>picture</th>
+                    <th>Picture</th>
+                    <th hidden>pictureValue</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -143,7 +144,7 @@
           <script src="../assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <script>
   $(function () {
-    $('#table').DataTable({
+    $('#example').DataTable({
       "bLengthChange": false
     })
   })

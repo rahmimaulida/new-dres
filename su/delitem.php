@@ -4,7 +4,7 @@ include('../config.php');
 
 $id = $_GET['id'];
 $ticket = $_GET['ticket'];
-$material = $_GET['mat'];
+$material = $_GET['material'];
 $date = date("Y-m-d h:i:s");
 $info = $_SESSION['name']." Propose to Delete Material ".$material." At ".$date;
 

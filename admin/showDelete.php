@@ -2,7 +2,9 @@
     session_start();
 include '../config.php';
 include 'header.php';
-    $no_ticket = $_GET['id'];
+    $id = $_GET['id'];
+    $material = $_GET['material'];
+    $ticket = $_GET['ticket'];
 
     $history = MySQL_query("SELECT * FROM tbl_history WHERE no_ticket='$no_ticket' ORDER BY id_history DESC");
 
@@ -52,6 +54,7 @@ include 'header.php';
                                     <th>Reason</th>
                                     <th>Price</th>
                                     <th>Amount</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -69,6 +72,9 @@ include 'header.php';
                                         <td><?php echo $res['issue']; ?></td>
                                         <td>US$<?php echo number_format(($res['amount'] / $res['qty']),2,",","."); ?></td>
                                         <td>US$<?php echo number_format($res['amount'],2,",","."); ?></td>
+                                        <td>
+                                          <?php echo "<a class='btn btn-danger' data-toggle='modal' data-target='#del_confirm' data-href='delitem.php?ticket=<?php echo $no_ticket?>&id=<?php echo $id?>&material=<?php echo $material?>'><i class='fa fa-trash'></i> Delete</a>"; ?>
+                                        </td>
                                     </tr>
                                 <?php } ?>
                             </tbody>
@@ -149,7 +155,7 @@ include 'header.php';
 </style>
 <script>
 
-    
+
 
   $(document).ready(function() {
 

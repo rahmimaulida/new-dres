@@ -1,51 +1,32 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
 <?php
+error_reporting(0);
 include ('../config.php');
 include 'header.php';
 session_start();
-
 $t = mysql_query("SELECT sector from tbl_users WHERE userId='".$_SESSION['username']."'") or die(mysql_error());
 $s = mysql_fetch_array($t);
-
 //$pic = mysql_query("SELECT name FROM tbl_users WHERE position='CS&Q Engineer' AND sector='".$s['sector']."'") or die(mysql_error());
 $sector = mysql_query("SELECT sector FROM tbl_users WHERE position='CS&Q Engineer' AND sector='".$s['sector']."'") or die(mysql_error());
-
 $shift = mysql_query("SELECT * FROM shift");
-
 $material = mysql_query("SELECT material_name, material_description FROM tbl_material");
 $tbltemp = mysql_query("SELECT * FROM tempreject_".$_SESSION['username']."");
-
 $reason = mysql_query("SELECT * FROM tbl_deflist") or die(mysql_error());
 //$reason = mysql_query("SELECT material_name, material_description FROM tbl_material");
-
 $jumlahSum= mysql_query("SELECT sum(amount) as jumlah, sum(qty) as qty FROM  tempreject_".$_SESSION['username']."");
 $tes=mysql_fetch_array($jumlahSum);
-
 $thresholdAmount= mysql_query("SELECT * from tbl_threshold");
 $thresholdQuery= mysql_fetch_array($thresholdAmount);
-
 $thresholdQty= mysql_query("SELECT * FROM tbl_thresholdqty");
 $thresholdQtyQuery= mysql_fetch_array($thresholdQty);
-
 $takeId= mysql_query("SELECT * FROM tbl_thresholdqty");
 $eksId= mysql_fetch_array($takeId);
-
 $numtbl = 0;
 if($tbltemp){
   $numtbl = mysql_num_rows($tbltemp);
 }
-
-$sc= "D-";
-$plantCode= mysql_query("SELECT * from tbl_masterdata");
-$sectorName= mysql_query("SELECT * from tbl_sector");
-
-$thnBlnTgl= mysql_query("SELECT insertDate from tbl_prod_reject");
-
-$subSector= substr($sectorName['sector'], 0, 2);
-
-
 ?>
-
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -69,7 +50,7 @@ $subSector= substr($sectorName['sector'], 0, 2);
           <!-- general form elements -->
           <div class="box box-success">
             <div class="box-header box-solid bg-green with-border">
-              <h3 class="box-title">Input Reject Item <?php echo $subSector; ?></h3>
+              <h3 class="box-title">Input Reject Item</h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
@@ -77,11 +58,11 @@ $subSector= substr($sectorName['sector'], 0, 2);
               <div class="box-body">
                 <div class="form-group">
                   <label for="Date of Reject">Date of Reject</label>
-                    <input type="text" class="form-control selectpicker" data-live-search="true" name="when" id="when" placeholder="Insert When" value="<?php echo date('Y-m-d'); ?>" required>
+                    <input type="text" class="form-control" name="when" id="when" placeholder="Insert When" value="<?php echo date('Y-m-d'); ?>" required>
                 </div>
                 <div class="form-group">
                   <label>Shift</label>
-                  <select class="form-control selectpicker" name="shift" id="shift" data-live-search="true" required>
+                  <select class="form-control selectpicker" name="shift" id="shift" required>
                     <option disabled selected>Select Shift...</option>
                     <?php while($shiftRES=mysql_fetch_array($shift)){?>
                       <option value="<?php echo $shiftRES['id_shift']; ?>"><?php echo $shiftRES['shift']; ?></option>
@@ -142,10 +123,8 @@ $subSector= substr($sectorName['sector'], 0, 2);
 
               </div>
               <?php
-
               $tresss=MySQL_query("SELECT * FROM tbl_thresholdqty WHERE id=1");
               $qty=mysql_fetch_array($tresss);
-
               $tressss=MySQL_query("SELECT * FROM tbl_threshold WHERE id_threshold=1");
               $amount=mysql_fetch_array($tressss);
               ?>
@@ -165,7 +144,7 @@ $subSector= substr($sectorName['sector'], 0, 2);
             <!-- /.box-header -->
             <div class="box-body show-data">
               <div class="table-responsive">
-              <table id="table" class="table table-stripes">
+              <table id="example1" class="table table-stripes">
                 <thead>
                   <input type="hidden" name="jumlah" id="jumlah" value="<?php echo $tes['jumlah']; ?>">
                   <input type="hidden" name="jumlahQty" id="jumlahQty" value="<?php echo $tes['qty']; ?>">
@@ -187,7 +166,6 @@ $subSector= substr($sectorName['sector'], 0, 2);
 
                   <?php
                   $no = 1;
-
                   if($numtbl > 0){
                   while($res=mysql_fetch_array($tbltemp)){
                   ?>
@@ -202,6 +180,7 @@ $subSector= substr($sectorName['sector'], 0, 2);
                     <td><button class="btn btn-danger del-data" id="<?php echo $res['id_reject']; ?>"><i class="fa fa-trash"></i></button></td>
                     <td hidden><input type="text" value="<?php echo $res['pic']; ?>" name="picName" id="picName"></td>
                     <td>
+
                       <br>
                         <center><div id="my_camera<?php echo $no; ?>"></div>
                           <br>
@@ -226,6 +205,7 @@ $subSector= substr($sectorName['sector'], 0, 2);
                         function take_snapshot(results_photo, id) {
                           // take snapshot and get image data
                           Webcam.snap( function(data_uri) {
+                            // display results in page
                             Webcam.upload( data_uri, 'saveimage.php?id='+id, function(code, text) {
                             document.getElementById(results_photo).innerHTML =
                               '<img src="'+data_uri+'"/>';
@@ -240,6 +220,7 @@ $subSector= substr($sectorName['sector'], 0, 2);
                         $tressss=MySQL_query("SELECT * FROM tbl_threshold WHERE id_threshold=1");
                         $amount=mysql_fetch_array($tressss);
                         ?>
+
                         <td hidden><input type="text" value="0" name="pictureValue" id="pictureValue"></td>
                   </tr>
                 <?php }} else {?>
@@ -268,13 +249,11 @@ $subSector= substr($sectorName['sector'], 0, 2);
                   Webcam.attach( '#my_camera' );
                 </script>
               <div class="text-center">
-
                 <!-- First, include the Webcam.js JavaScript Library -->
 
               <!--  <form>
                   <input type=button value="Take Snapshot" onClick="take_snapshot()" class="btn btn-lg btn-warning btn-sm">
                 </form>
-
             <br>
             <br>
           -->
@@ -326,19 +305,15 @@ $(document).ready(function () {
       format: 'yyyy-mm-dd'
   });
 });
-
 </script>
 
 <script type="text/javascript">
-
   $(function () {
     $('.selectpicker').selectpicker();
-
-    $('#table').DataTable({
+    $('#example1').DataTable({
       "bLengthChange": false
-    });
+    })
   })
-
   $(document).ready(function()
     {
         $(".del-data").click(function()
@@ -355,9 +330,9 @@ $(document).ready(function () {
             });
         });
     });
-
   $(document).ready(function(){
-		$("#instemp").click(function(){
+		$("#instemp").click(function(e){
+        e.preventDefault()
         var data = $('.form-add').serialize();
         var pic = $('#pic').val();
         var sector = $('#sector').val();
@@ -382,10 +357,7 @@ $(document).ready(function () {
         }
 		  });
 	});
-
-
   $(document).ready(function() {
-
       <?php if($tes['jumlah'] > $thresholdQuery['threshold']){?>
           $('object[type="application/x-shockwave-flash"]').attr('required' , true);
           $('button[type="submit"]').attr('disabled' , true);
@@ -393,10 +365,7 @@ $(document).ready(function () {
           $('object[type="application/x-shockwave-flash"]').attr('required' , true);
           $('button[type="submit"]').attr('disabled' , true);
       <?php } ?>
-
   });
-
-
   $(function() {
     $("#sector").change(function(){
         var grp = $(this).val();
@@ -409,7 +378,6 @@ $(document).ready(function () {
             success: function(msg){
                 if(msg == ''){
                         $("select#pic").html('<option disabled selected value=""> -- select an option -- </option>');
-
                 }else{ //alert(msg);
                           $("select#pic").html(msg).selectpicker('refresh');
                 }
@@ -423,7 +391,6 @@ $(document).ready(function () {
             success: function(msg){
                 if(msg == ''){
                         $("select#line").html('<option disabled selected value> -- select an option -- </option>');
-
                 }else{ //alert(msg);
                           $("select#line").html(msg).selectpicker('refresh');
                 }
@@ -431,7 +398,6 @@ $(document).ready(function () {
         });
       });
   });
-
   $(function() {
     $("#material_name").change(function(){
         var tf = $(this).val();
@@ -444,7 +410,6 @@ $(document).ready(function () {
             success: function(msg){
                 if(msg == ''){
                         $("select#material_description").html('<option disabled selected value=""> -- select an option -- </option>');
-
                 }else{ //alert(msg);
                           $("select#material_description").html(msg).selectpicker('refresh');
                 }
@@ -452,25 +417,6 @@ $(document).ready(function () {
         });
       });
   });
-
-  $(function() {
-    $("#shift").change(function(){
-        var tf = $(this).val();
-  // alert(grp);
-        $.ajax({
-            type: "POST",
-            dataType: "html",
-            url: "get_shift.php",
-            data: "data="+tf,
-            success: function(msg){
-                
-            }
-        });
-      });
-  });
-
-
-
   $(function() {
     $("#issue").change(function(){
         var tf = $(this).val();
@@ -483,7 +429,6 @@ $(document).ready(function () {
             success: function(msg){
                 if(msg == ''){
                         $("select#defcode").html('<option disabled selected value=""> -- select an option -- </option>');
-
                 }else{ //alert(msg);
                           $("select#defcode").html(msg).selectpicker('refresh');
                 }
@@ -491,9 +436,6 @@ $(document).ready(function () {
         });
       });
   });
-
-
-
 </script>
 <!--
 <script language="JavaScript">
@@ -505,7 +447,6 @@ $(document).ready(function () {
 		});
 		Webcam.attach( '#my_camera' );
 	</script>
-
   <script language="JavaScript">
     function take_snapshot() {
       // take snapshot and get image data
@@ -514,14 +455,12 @@ $(document).ready(function () {
         document.getElementById('results').innerHTML =
           '<img src="'+data_uri+'" id="gambar"/>';
           Webcam.upload(data_uri, 'upload.php', function (code, text) {
-
                 alert(data_uri);
         });
       });
       Webcam.reset();
     }
   </script>
-
 	<!-- A button for taking snaps -->
 
 	<!-- Code to handle taking the snapshot and displaying it locally -->

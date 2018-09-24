@@ -33,7 +33,7 @@ if(isset($_POST['approve'])){
         $url= "waiting_approval.php";
         $notif =mysql_query("INSERT INTO tbl_notif (`id_notif`, `PIC`, `link`, `date`, `status`, `position`, `sector`)
                 values('', '".$_SESSION['username']."', '".$url."', now(), 1, 'Supervisor (Support Function)', '".$s['sector']."')");
-        header("location: product_reject.php?success");
+        header("location: waiting_approval.php?success");
     }
 }
 
