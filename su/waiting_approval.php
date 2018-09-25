@@ -154,6 +154,20 @@ $es=mysql_fetch_array($check);
     </div>
 </div>
 
+<div class="modal fade" id="ModalDetailGambar" tabindex="-1" role="dialog" aria-labelledby="upload-avatar-title" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header box-solid bg-green">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <h4 class="modal-title" id="memberModalLabel">Picture of Reject Material</h4>
+        </div>
+        <div class="dash">
+         <!-- Content goes in here -->
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
 <div class="modal fade" id="ModalDetailsCommentApprove" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -255,6 +269,26 @@ $(function () {
                 }
             });
     })
+    $('#ModalDetailGambar').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var recipient = button.data('whatever') // Extract info from data-* attributes
+            var modal = $(this);
+            var dataString = 'id=' + recipient;
+
+              $.ajax({
+                  type: "GET",
+                  url: "showGambar.php",
+                  data: dataString,
+                  cache: false,
+                  success: function (data) {
+                      console.log(data);
+                      modal.find('.dash').html(data);
+                  },
+                  error: function(err) {
+                      console.log(err);
+                  }
+              });
+      })
 
     $('#ModalDetailsCommentApprove').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget) // Button that triggered the modal

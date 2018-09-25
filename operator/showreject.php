@@ -44,6 +44,7 @@
                                     <th>Qty</th>
                                     <th>Price</th>
                                     <th>Amount</th>
+                                    <th>Picture</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -75,6 +76,7 @@
                                         <td><?php echo $res['qty']; ?></td>
                                         <td>US$<?php echo number_format(($res['amount'] / $res['qty']),2,",","."); ?></td>
                                         <td>US$<?php echo number_format($res['amount'],2,",","."); ?></td>
+                                        <td><img src="../assets/img/<?php echo $res['gambar']; ?>" width="96px" height="72px"/></td>
                                     </tr>
                                     <?php } else { ?>
                                         <tr>
@@ -85,6 +87,11 @@
                                           <td><?php echo $res['qty']; ?></td>
                                           <td>US$<?php echo number_format(($res['amount'] / $res['qty']),2,",","."); ?></td>
                                           <td>US$<?php echo number_format($res['amount'],2,",","."); ?></td>
+                                          <td>
+                                            <a class="button" href="#" data-target="#ModalDetailGambar" data-whatever="<?php echo $res['id_reject']; ?>" data-toggle="modal">
+                                            <img src="../assets/img/<?php echo $res['gambar']; ?>" width="96px" height="72px"/>
+                                            </a>
+                                            </td>
                                       </tr>
                                     <?php } ?>
                                 <?php } ?>
@@ -111,23 +118,6 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="box box-success">
-                    <div class="box-header with-border box-solid bg-green">
-                        <h3 class="box-title">Picture</h3>
-                    </div>
-
-                    <?php
-                    $sql=mysql_query("select gambar from tbl_approve where no_ticket= $no_ticket");
-                    $tampilkan = mysql_fetch_array($sql);
-                      ?>
-                    <!-- /.box-header -->
-                    <center>
-                      <td><img src="../assets/img/<?php echo $tampilkan['gambar']?>" width="150px" height="120px"/></td>
-                    </center>
-                      <!--<img src="<?php// echo $tampilkan['']; ?>" width="150px" height="150px"/></center> -->
-            </div>
-        </div>
         </div>
 
         </section>
@@ -138,7 +128,28 @@
         <?php }*/ ?>
         <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
     </div>
+
+    <!--Modal for uploading photo-->
+    
+
+    <!--
+    <div class="modal" id="ModalDetailGambar" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header box-solid bg-green">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="memberModalLabel">Picture of Reject Material</h4>
+                </div>
+                <div class="dash">
+                 <!-- Content goes in here -->
+               <!--
+                </div>
+            </div>
+        </div>
+    </div>
+  -->
 	</form>
+
 </body>
 <style>
     .list-group{
@@ -155,6 +166,27 @@ $(function () {
       "pageLength": 5
     })
   })
+
+  $('#ModalDetailGambar').on('show.bs.modal', function (event) {
+          var button = $(event.relatedTarget) // Button that triggered the modal
+          var recipient = button.data('whatever') // Extract info from data-* attributes
+          var modal = $(this);
+          var dataString = 'id=' + recipient;
+
+            $.ajax({
+                type: "GET",
+                url: "showGambar.php",
+                data: dataString,
+                cache: false,
+                success: function (data) {
+                    console.log(data);
+                    modal.find('.dash').html(data);
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
+    })
 
 </script>
 </html>

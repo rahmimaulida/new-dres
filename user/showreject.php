@@ -45,6 +45,7 @@
                                     <th>Qty</th>
                                     <th>Price</th>
                                     <th>Amount</th>
+                                    <th>Picture</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -61,6 +62,11 @@
                                         <td><?php echo $res['qty']; ?></td>
                                         <td>US$<?php echo number_format(($res['amount'] / $res['qty']),2,",","."); ?></td>
                                         <td>US$<?php echo number_format($res['amount'],2,",","."); ?></td>
+                                        <td>
+                                          <a class="button" href="#" data-target="#ModalDetailGambar" data-whatever="<?php echo $res['id_reject']; ?>" data-toggle="modal">
+                                          <img src="../assets/img/<?php echo $res['gambar']; ?>" width="96px" height="72px"/>
+                                          </a>
+                                        </td>
                                         <td>
                                             <?php if($tes['mgr_status'] == '' && $tes['eng_status'] == ''){  ?>
                                                 <a class="btn btn-warning" href="#" data-target="#ModalUpdate" data-whatever="<?php echo $res['id_reject']; ?>" data-toggle="modal"><i class="fa fa-edit"></i></a>

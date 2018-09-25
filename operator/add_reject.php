@@ -158,8 +158,8 @@ if($tbltemp){
                     <th>Amount</th>
                     <th>Action</th>
                     <th hidden>pic</th>
+                    <th>Snapshot Picture</th>
                     <th>Picture</th>
-                    <th hidden>pictureValue</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -214,14 +214,12 @@ if($tbltemp){
                       }
                       </script>
                         </td>
-                        <?php
-                        $tresss=MySQL_query("SELECT * FROM tbl_thresholdqty WHERE id=1");
-                        $qty=mysql_fetch_array($tresss);
-                        $tressss=MySQL_query("SELECT * FROM tbl_threshold WHERE id_threshold=1");
-                        $amount=mysql_fetch_array($tressss);
-                        ?>
 
-                        <td hidden><input type="text" value="0" name="pictureValue" id="pictureValue"></td>
+                        <td>
+                          <a class="button" href="#" data-target="#ModalDetailGambar" data-whatever="<?php echo $res['id_reject']; ?>" data-toggle="modal">
+                          <img src="../assets/img/<?php echo $res['gambar']; ?>" width="96px" height="72px"/>
+                          </a>
+                          </td>
                   </tr>
                 <?php }} else {?>
                   <tr>
@@ -279,6 +277,19 @@ if($tbltemp){
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+  <div class="modal fade" id="ModalDetailGambar" tabindex="-1" role="dialog" aria-labelledby="upload-avatar-title" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header box-solid bg-green">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="memberModalLabel">Picture of Reject Material</h4>
+          </div>
+          <div class="dash">
+           <!-- Content goes in here -->
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+  </div>
   <?php include 'footer.php'; ?>
 </div>
 <!-- ./wrapper -->
@@ -436,6 +447,27 @@ $(document).ready(function () {
         });
       });
   });
+
+  $('#ModalDetailGambar').on('show.bs.modal', function (event) {
+          var button = $(event.relatedTarget) // Button that triggered the modal
+          var recipient = button.data('whatever') // Extract info from data-* attributes
+          var modal = $(this);
+          var dataString = 'id=' + recipient;
+
+            $.ajax({
+                type: "GET",
+                url: "showGambar1.php",
+                data: dataString,
+                cache: false,
+                success: function (data) {
+                    console.log(data);
+                    modal.find('.dash').html(data);
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
+    })
 </script>
 <!--
 <script language="JavaScript">

@@ -3,7 +3,10 @@
     include('../config.php');
     $no_ticket = $_GET['id'];
 
-    $history = MySQL_query("SELECT * FROM tbl_history WHERE no_ticket='$no_ticket' ORDER BY `id_history` DESC");
+    $history = MySQL_query("SELECT tbl_history.no_ticket, tbl_history.information,tbl_history.date,tbl_history.code_info,
+               tbl_approve.eng_com,tbl_approve.mgr_com, tbl_approve.spv_com, tbl_approve.finance_mgrCom
+               FROM tbl_history LEFT JOIN tbl_approve on tbl_approve.no_ticket= tbl_history.no_ticket
+               WHERE tbl_history.no_ticket= tbl_approve.no_ticket");
     $check = mysql_query("SELECT mgr_status FROM tbl_approve WHERE no_ticket='$no_ticket'");
     $try = mysql_fetch_array($check);
 
@@ -45,6 +48,7 @@
                                     <th>Qty</th>
                                     <th>Price</th>
                                     <th>Amount</th>
+                                    <th>Picture</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -62,6 +66,10 @@
                                         <td>US$<?php echo number_format(($res['amount'] / $res['qty']),2,",","."); ?></td>
                                         <td>US$<?php echo number_format($res['amount'],2,",","."); ?></td>
                                         <td>
+                                          <a class="button" href="#" data-target="#ModalDetailGambar" data-whatever="<?php echo $res['id_reject']; ?>" data-toggle="modal">
+                                          <img src="../assets/img/<?php echo $res['gambar']; ?>" width="96px" height="72px"/>
+                                          </a>
+                                          </td>                                        <td>
                                         <?php if($try['mgr_status'] == '' || $try['mgr_status'] == 'Reject'){  ?>
                                                 <a class="btn btn-warning" href="#" data-target="#ModalUpdate" data-whatever="<?php echo $res['id_reject']; ?>" data-toggle="modal"><i class="fa fa-edit"></i></a>
                                                 <?php echo "<a class='btn btn-danger' data-toggle='modal' data-target='#del_confirm' data-href='delitem.php?id=".$res['id_reject']."&ticket=".$res['no_ticket']."&mat=".$res['material_name']."'><i class='fa fa-trash'></i></a>"; ?>
@@ -87,14 +95,19 @@
                         <ul class="list-group">
                         <?php while($his=mysql_fetch_array($history)){ ?>
                             <li class="list-group-item">
-                              <span class="label label-danger">Rejected By : </span>
-                              <p style="font-style: italic"><?php echo $his['information']; ?></p>
-
-                              <span class="label label-success">Info : </span>
-                              <p style="font-style: italic"><?php echo $his['code_info']; ?></p>
-
                               <span class="label label-warning">Date : </span>
                               <p style="font-weight: bold"><?php echo $his['date']; ?></p>
+
+                              <span class="label label-info">Ticket Status : </span>
+                              <p style="font-style: italic"><?php echo $his['information']; ?> (<?php echo $his['code_info']; ?>)</p>
+
+                              <span class="label label-success">Comment : </span>
+                              <p style="font-style: italic">1. Engineer Comment: <?php echo $his['eng_com']; ?></p>
+                              <p style="font-style: italic">2. Supervisor Comment: <?php echo $his['spv_com']; ?></p>
+                              <p style="font-style: italic">3. CS&Q Manager Comment: <?php echo $his['mgr_com']; ?></p>
+                              <p style="font-style: italic">4. Finane Manager Comment: <?php echo $his['finance_mgrCom']; ?></p>
+
+
 
                               </li>
                         <?php } ?>
@@ -106,7 +119,7 @@
 
         </section>
     </div>
-    
+
 	</form>
 </body>
 <style>

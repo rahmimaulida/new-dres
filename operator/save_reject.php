@@ -42,7 +42,7 @@ if(isset($_POST['submit'])){
 
     $username=	$_SESSION['username'];
 
-    $insert = "INSERT INTO `tbl_prod_reject`(`no_ticket`, `material_name`,`material_description`, `qty`, `plant`, `sector`, `line`, `issue`, `amount`, `action`, `status`, `pic`, `insertedBy`, `insertDate`, `shift`) SELECT ".$get.", `material_name`, `material_description`, `qty`, `plant`, `sector`, `line`, `issue`, `amount`, `action`, `status`, `pic`, `insertedBy`, now() , `shift` FROM `tempreject_".$_SESSION['username']."`;";
+    $insert = "INSERT INTO `tbl_prod_reject`(`no_ticket`, `material_name`,`material_description`, `qty`, `plant`, `sector`, `line`, `issue`, `amount`, `action`, `status`, `pic`, `insertedBy`, `insertDate`, `shift`, `gambar`) SELECT ".$get.", `material_name`, `material_description`, `qty`, `plant`, `sector`, `line`, `issue`, `amount`, `action`, `status`, `pic`, `insertedBy`, now() , `shift`, `gambar` FROM `tempreject_".$_SESSION['username']."`;";
     $qry = mysql_query($insert) or die(mysql_error());
 
     $sqlGambar= mysql_query("select * from gambar order by id desc limit 1");
@@ -62,6 +62,8 @@ if(isset($_POST['submit'])){
             values('', '".$_SESSION['username']."', '".$url."', now(), 0, 'CS&Q Engineer', '".$s['sector']."')");
 
 }
-header("location: add_reject.php");
+$query1= "TRUNCATE `tempreject_".$_SESSION['username']."`";
+MySQL_query($query1);
+header("location: add_reject.php?success");
 
 ?>

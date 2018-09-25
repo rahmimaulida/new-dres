@@ -20,8 +20,8 @@
                     <th>Amount</th>
                     <th>Action</th>
                     <th hidden>pic</th>
+                    <th>Snapshot Picture</th>
                     <th>Picture</th>
-                    <th hidden>pictureValue</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -79,6 +79,11 @@
                       </script>
                     </center>
                         </td>
+                        <td>
+                          <a class="button" href="#" data-target="#ModalDetailGambar" data-whatever="<?php echo $res['id_reject']; ?>" data-toggle="modal">
+                          <img src="../assets/img/<?php echo $res['gambar']; ?>" width="96px" height="72px"/>
+                          </a>
+                          </td>
                   </tr>
                   <?php }}else {?>
                   <tr>

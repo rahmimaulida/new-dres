@@ -191,18 +191,34 @@ $qrysector = mysql_query("SELECT * FROM tbl_sector GROUP BY sector");
                   </select>
                 </div>
               </div>
-                <div class="form-group">
+              <div class="form-group">
+                <label for="sctr" class="col-sm-2 control-label">Sector 1</label>
+                <div class="col-sm-3">
+                  <table>
+  																<tr>
+  																	<td><input type="button" class="btn btn-info" name="add_btn" value="Add Sector" id="add_btn"></td>
+
+  																	<td>&nbsp;</td>
+  																</tr>
+  																<tbody id="container">
+  																</tbody>
+  															</table>
+              </div>
+            </div>
+                <!--<div class="form-group">
                     <label for="Sector" class="col-sm-2 control-label">Sector</label>
 
                     <div class="col-sm-10">
-                      <?php while($ress=mysql_fetch_array($qrysector)){?>
-                      <input type="checkbox" name="sector[]" value="<?php echo $ress['sector']; ?>"> &nbsp;<?php echo $ress['sector']; ?>
-                        <?php } ?>
+                      <?php// while($ress=mysql_fetch_array($qrysector)){?>
+                      <input type="checkbox" name="sector[]" value="<?php //echo $ress['sector']; ?>"> &nbsp;<?php// echo $ress['sector']; ?>
+                        <?php //} ?>
                         <!--<select class="form-control" name="sector" id="sector" required>
                             <option disabled selected value> -- select an option -- </option>
                         </select> -->
+                        <!--
                     </div>
                 </div>
+              -->
                 <div class="form-group">
                     <label for="Line" class="col-sm-2 control-label">Line</label>
 
@@ -341,8 +357,29 @@ $(function () {
             });
       });
   });
-
+  <option disabled selected>Select Line...</option>
+  <?php while($resss=mysql_fetch_array($qryline)){?>
+    <option value="<?php echo $resss['line']; ?>"><?php echo $resss['line']; ?></option>
+  <?php } ?>
   </script>
+  <script type="text/javascript">
+		$(document).ready(function() {
+			var count = 0;
+			$("#add_btn").click(function(){
+				count += 1;
+				$('#container').append(
+					'<tr class="records">'
+          + '<td><select class="form-control" name="sctr_' + count + '[]" required><option disabled selected>Select Sector...</option><?php $qrysector = mysql_query("SELECT * FROM tbl_sector GROUP BY sector"); while($ress=mysql_fetch_array($qrysector)){?><option value="<?php echo $ress['sector']; ?>"><?php echo $ress['sector']; ?></option><?php } ?></select></td>'
+          + '<td>&nbsp;<a class="remove_item" href="#" >Remove</a>'
+					+ '<input id="rows_' + count + '" name="rows[]" value="'+ count +'" type="hidden"></td></tr>'
+		        );
+		    });
+
+		    $("body").on('click',".remove_item", function() {
+                    $(this).parents(".records").remove();
+            });
+		});
+	</script>
 
 </body>
 </html>
