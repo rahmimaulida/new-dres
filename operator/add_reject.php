@@ -78,6 +78,7 @@ if($tbltemp){
                 </div>
                 <div class="form-group">
                   <label>PIC</label>
+                  <div id="testjuga"></div>
                   <select class="form-control selectpicker" data-live-search="true" name="pic" id="pic" required>
                   </select>
                 </div>
@@ -378,7 +379,7 @@ $(document).ready(function () {
   });
   $(function() {
     $("#sector").change(function(){
-        var grp = $(this).val();
+        var grp = $("#sector").val();
 // alert(grp);
         $.ajax({
             type: "POST",
@@ -389,7 +390,7 @@ $(document).ready(function () {
                 if(msg == ''){
                         $("select#pic").html('<option disabled selected value=""> -- select an option -- </option>');
                 }else{ //alert(msg);
-                          $("select#pic").html(msg).selectpicker('refresh');
+                        $("select#pic").html(msg).selectpicker('refresh');
                 }
             }
         });
