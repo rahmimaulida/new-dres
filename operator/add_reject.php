@@ -73,8 +73,7 @@ if($tbltemp){
                   <label>Sector</label>
                   <select class="form-control selectpicker" data-live-search="true" name="sector" id="sector" required>
                     <option disabled selected>Select Sector...</option>
-                    <?php $res=mysql_fetch_array($sector);?>
-                      <option value="<?php echo $res['sector']; ?>"><?php echo $res['sector']; ?></option>
+                      <option value="<?php echo $s['sector']; ?>"><?php echo $s['sector']; ?></option>
                   </select>
                 </div>
                 <div class="form-group">

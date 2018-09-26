@@ -192,7 +192,7 @@ $qrysector = mysql_query("SELECT * FROM tbl_sector GROUP BY sector");
                 </div>
               </div>
               <div class="form-group">
-                <label for="sctr" class="col-sm-2 control-label">Sector 1</label>
+                <label for="sector" class="col-sm-2 control-label">Sector</label>
                 <div class="col-sm-3">
                   <table>
   																<tr>
@@ -220,7 +220,7 @@ $qrysector = mysql_query("SELECT * FROM tbl_sector GROUP BY sector");
                 </div>
               -->
                 <div class="form-group">
-                    <label for="Line" class="col-sm-2 control-label">Line</label>
+                    <label for="Line" class="col-sm-2 control-label"></label>
 
                     <div class="col-sm-10">
                       <select class="form-control" name="linee" id="linee" required>
@@ -357,11 +357,11 @@ $(function () {
             });
       });
   });
-  <option disabled selected>Select Line...</option>
-  <?php while($resss=mysql_fetch_array($qryline)){?>
-    <option value="<?php echo $resss['line']; ?>"><?php echo $resss['line']; ?></option>
-  <?php } ?>
+
   </script>
+  <?php
+
+  ?>
   <script type="text/javascript">
 		$(document).ready(function() {
 			var count = 0;
@@ -369,9 +369,8 @@ $(function () {
 				count += 1;
 				$('#container').append(
 					'<tr class="records">'
-          + '<td><select class="form-control" name="sctr_' + count + '[]" required><option disabled selected>Select Sector...</option><?php $qrysector = mysql_query("SELECT * FROM tbl_sector GROUP BY sector"); while($ress=mysql_fetch_array($qrysector)){?><option value="<?php echo $ress['sector']; ?>"><?php echo $ress['sector']; ?></option><?php } ?></select></td>'
-          + '<td>&nbsp;<a class="remove_item" href="#" >Remove</a>'
-					+ '<input id="rows_' + count + '" name="rows[]" value="'+ count +'" type="hidden"></td></tr>'
+          + '<td><select class="form-control" name="sector[]" required><option disabled selected>Select Sector...</option><?php $qrysector = mysql_query("SELECT * FROM tbl_sector GROUP BY sector"); while($ress=mysql_fetch_array($qrysector)){?><option value="<?php echo $ress['sector']; ?>"><?php echo $ress['sector']; ?></option><?php } ?></select></td>'
+          + '<td>&nbsp;<a class="remove_item" href="#" >  Remove</a></tr>'
 		        );
 		    });
 
