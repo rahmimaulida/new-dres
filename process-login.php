@@ -26,6 +26,8 @@ if($check > 0){
 			header("location: admin/index.php");
 		}else if($level == 'Finance'){
 			header("location: finance/index.php");
+		}else if($level == 'SAP Admin'){
+			header("location: sap/index.php");
 		}
 	}
 }else{

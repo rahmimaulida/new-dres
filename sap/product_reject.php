@@ -1,5 +1,4 @@
 <?php
-session_start();
 error_reporting(0);
 include '../config.php';
 include 'header.php';
@@ -24,7 +23,6 @@ $es=mysql_fetch_array($check);
     </section>
 
     <!-- Main content -->
-
     <section class="content">
       <div class="row">
         <div class="col-xs-12">
@@ -34,103 +32,126 @@ $es=mysql_fetch_array($check);
             </div>
             <!-- /.box-header -->
             <div class="box-body">
+              <div class="row">
+                <div class="col-md-3">
+                  <label for=kode_skim> Kode SKIM*</label>
+                  <input required type="text" id="kode_skim" name="kode_skim" placeholder="Masukkan Kode SKIM"><br><br>
+                  <label for=kode_skim> Kode SKIM*</label>
+									<input required type="text" id="kode_skim" name="kode_skim" placeholder="Masukkan Kode SKIM"><br><br>
+                  <label for=kode_skim> Kode SKIM*</label>
+									<input required type="text" id="kode_skim" name="kode_skim" placeholder="Masukkan Kode SKIM">
+                </div>
+                <div class="col-md-3">
+                  <label for=kode_skim> Kode SKIM*</label>
+                  <input required type="text" id="kode_skim" name="kode_skim" placeholder="Masukkan Kode SKIM"><br><br>
+                  <label for=kode_skim> Kode SKIM*</label>
+									<input required type="text" id="kode_skim" name="kode_skim" placeholder="Masukkan Kode SKIM"><br><br>
+                  <label for=kode_skim> Kode SKIM*</label>
+									<input required type="text" id="kode_skim" name="kode_skim" placeholder="Masukkan Kode SKIM">
+                </div>
+            </div>
+              <input type="button" value="Simpan"><br><br><br><br>
               <div class="table-responsive">
-              <table id="example1" class="table table-bordered table-striped">
+              <table id="example1" class="table table-bordered table-striped" width="60%">
                 <thead>
-                <tr valign="middle">
-                  <th class="text-center" width="1px" rowspan="2">Ticket No</th>
-                  <th class="text-center" rowspan="2">Sector</th>
-                  <th class="text-center" rowspan="2">Shift</th>
-                  <th class="text-center" colspan="2">Line Inspector</th>
-                  <th class="text-center" colspan="2">Engineer</th>
-                  <th class="text-center" colspan="2">Supervisor</th>
-                  <th class="text-center" width="1px" rowspan="2">Total Reject Qty</th>
-                  <th class="text-center" width="2px" rowspan="2">Total Amount</th>
-                  <th class="text-center" rowspan="2">Status</th>
-                  <th class="text-center" rowspan="2">Back From</th>
-                  <th class="text-center" rowspan="2">Action</th>
+                <tr valign="left">
+                  <th class="text-left" width="1px">Line</th>
+                  <th class="text-left">Material / Part No</th>
+                  <th class="text-left">Description</th>
+                  <th class="text-left">Location</th>
+                  <th class="text-left">Quantity</th>
+                  <th class="text-left">Unit</th>
+                  <th class="text-left">Ammount (USD)</th>
+                  <th class="text-left">Remark</th>
                 </tr>
-                <tr>
-                  <th class="text-center">Name</th>
-                  <th class="text-center" width="5px">Date</th>
-
-                  <th class="text-center"  width="5px">Name</th>
-                  <th class="text-center"  width="5px">Date</th>
-
-                  <th class="text-center">Name</th>
-                  <th class="text-center"  width="5px">Date</th>
-
-                  </tr>
 
                 </thead>
 
                 <tbody>
-                <?php
-                  $query=mysql_query("SELECT tbl_prod_reject.no_ticket, tbl_prod_reject.shift, tbl_prod_reject.insertDate, tbl_prod_reject.sector,
-                    tbl_prod_reject.insertedBy, tbl_approve.BackFrom, SUM(tbl_prod_reject.qty) as total,
-                  SUM(tbl_prod_reject.amount) as amount, tbl_prod_reject.action, tbl_prod_reject.pic,
-                  tbl_approve.mgr_name, tbl_approve.eng_name, tbl_approve.spv, tbl_approve.finance_mgr, tbl_approve.sap_admin,
-                  tbl_approve.eng_date, tbl_approve.mgr_date, tbl_approve.spv_date, tbl_approve.finance_mgrDate
-                    FROM tbl_prod_reject
-                  left join tbl_approve on tbl_approve.no_ticket= tbl_prod_reject.no_ticket
-                  WHERE plant='".$tes['plant']."' AND spv ='' AND eng_name!=''
-                  GROUP BY no_ticket") or die(mysql_error());
-                  $jumlah=mysql_num_rows($query);
-                  if ($jumlah==0){?><td colspan="17" style="text-align: center;">NO WAITING LIST APPROVAL</td><?php }
-                  while($b=mysql_fetch_array($query)){
-                ?>
-                <?php
-
-                $tresss=MySQL_query("SELECT * FROM tbl_thresholdqty WHERE id=1");
-                $qty=mysql_fetch_array($tresss);
-
-                $tressss=MySQL_query("SELECT * FROM tbl_threshold WHERE id_threshold=1");
-                $amount=mysql_fetch_array($tressss);
-                ?>
-                  <tr class="text-center" <?php if ($b['BackFrom'] != 0 || $b['BackFrom'] != '' ){?>style= "color :red" <?php } ?>>
-                      <?php if($b['total'] <= $qty['thresholdQty'] && $b['amount'] <= $amount['threshold']){?>
-                    <td><a class="btn btn-warning btn-xs" href="#" data-target="#ModalDetail" data-whatever="<?php echo $b['no_ticket']; ?>"
-                      data-toggle="modal"><?php echo $b['no_ticket']; $no_ticket = $b['no_ticket']; ?></a></td>
-                    <?php } else { ?>
-                      <td><a class="btn btn-danger btn-xs" href="#" data-target="#ModalDetail" data-whatever="<?php echo $b['no_ticket']; ?>" data-toggle="modal"><?php echo $b['no_ticket']; $no_ticket = $b['no_ticket']; ?></a></td>
-                    <?php } ?>
-                    <td><?php echo $b['sector']; ?></td>
-                    <td><?php echo $b['shift']; ?></td>
-                    <td><?php echo $b['insertedBy']; ?></td>
-                    <td><?php echo $b['insertDate']; ?></td>
-                    <td><?php echo $b['eng_name']; ?></td>
-                    <td><?php echo $b['eng_date']; ?></td>
-                    <td><?php echo $b['spv']; ?></td>
-                    <td><?php echo $b['spv_date']; ?></td>
-                    <td><?php echo $b['total'] ?></td>
-                    <td>US$<?php echo number_format($b['amount'],2,",","."); ?></td>
-                    <td><?php echo $b['action'] ?></td>
-                    <td><?php if ($b['BackFrom'] != 0 || $b['BackFrom'] != '' ){echo $b['BackFrom'] ; } ?></td>
-
-                    <?php
-                    $tresss=MySQL_query("SELECT * FROM tbl_thresholdqty WHERE id=1");
-                    $qty=mysql_fetch_array($tresss);
-
-                    $tressss=MySQL_query("SELECT * FROM tbl_threshold WHERE id_threshold=1");
-                    $amount=mysql_fetch_array($tressss);
-                    ?>
-                    <form class="form-horizontal" action="approve.php" method="post">
-                    <td>
-                      <input type="hidden" name="ticket" id="ticket" value="<?php echo $b['no_ticket'];?>">
-                      <input type="hidden" name="comment" id="comment" value="-">
-                      <?php if($b['total'] <= $qty['thresholdQty'] && $b['amount'] <= $amount['threshold']){?>
-                      <button type="submit" class="btn btn-success btn-sm" name="approve" id="approve">Approve <i class="fa fa-thumbs-up"></i></button>
-                      <?php }else{?>
-                      <a class="btn btn-success btn-sm" name="approve" id="approve" href="#" data-target="#ModalDetailsCommentApprove" data-whatever="<?php echo $b['no_ticket']; ?>" data-toggle="modal">Approve <i class="fa fa-thumbs-up"></i></a><?php }?>
-                      <a class="btn btn-danger btn-sm" name="reject" id="reject" href="#" data-target="#ModalDetailsCommentReject" data-whatever="<?php echo $b['no_ticket']; ?>"
-                        data-toggle="modal">&nbsp;&nbsp;Reject&nbsp;&nbsp; <i class="fa fa-thumbs-down"></i></a></td>
-                    </form>
-                  </tr>
-                <?php } ?>
+                <tr>
+                  <td>LC1K</td>
+                  <td>M21571004</td>
+                  <td>ENAMELLED WIRE D0.085</td>
+                  <td>L101</td>
+                  <td>1.611</td>
+                  <td>KG</td>
+                  <td>23.04</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>LC1K</td>
+                  <td>M21571004</td>
+                  <td>ENAMELLED WIRE D0.085</td>
+                  <td>L101</td>
+                  <td>1.611</td>
+                  <td>KG</td>
+                  <td>23.04</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>LC1K</td>
+                  <td>M21571004</td>
+                  <td>ENAMELLED WIRE D0.085</td>
+                  <td>L101</td>
+                  <td>1.611</td>
+                  <td>KG</td>
+                  <td>23.04</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>LC1K</td>
+                  <td>M21571004</td>
+                  <td>ENAMELLED WIRE D0.085</td>
+                  <td>L101</td>
+                  <td>1.611</td>
+                  <td>KG</td>
+                  <td>23.04</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>LC1K</td>
+                  <td>M21571004</td>
+                  <td>ENAMELLED WIRE D0.085</td>
+                  <td>L101</td>
+                  <td>1.611</td>
+                  <td>KG</td>
+                  <td>23.04</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>LC1K</td>
+                  <td>M21571004</td>
+                  <td>ENAMELLED WIRE D0.085</td>
+                  <td>L101</td>
+                  <td>1.611</td>
+                  <td>KG</td>
+                  <td>23.04</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>LC1K</td>
+                  <td>M21571004</td>
+                  <td>ENAMELLED WIRE D0.085</td>
+                  <td>L101</td>
+                  <td>1.611</td>
+                  <td>KG</td>
+                  <td>23.04</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>LC1K</td>
+                  <td>M21571004</td>
+                  <td>ENAMELLED WIRE D0.085</td>
+                  <td>L101</td>
+                  <td>1.611</td>
+                  <td>KG</td>
+                  <td>23.04</td>
+                  <td></td>
+                </tr>
 
                 </tbody>
               </table>
-            </div>
+              </div>
             </div>
             <!-- /.box-body -->
 
@@ -246,9 +267,17 @@ $es=mysql_fetch_array($check);
 <script src="../assets/dist/js/demo.js"></script>
 <!-- page script -->
 <script>
-  $(function () {
-    $('#example1').DataTable()
+$(function () {
+  $('#example1').DataTable()
+  $('#example2').DataTable({
+    'paging'      : true,
+    'lengthChange': true,
+    'searching'   : true,
+    'ordering'    : true,
+    'info'        : true,
+    'autoWidth'   : false
   })
+})
 
   $(document).ready(function() {
         $('#del_confirm').on('show.bs.modal', function(e) {
@@ -277,27 +306,6 @@ $es=mysql_fetch_array($check);
             });
     })
 
-    $('#ModalDetailGambar').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget) // Button that triggered the modal
-            var recipient = button.data('whatever') // Extract info from data-* attributes
-            var modal = $(this);
-            var dataString = 'id=' + recipient;
-
-              $.ajax({
-                  type: "GET",
-                  url: "showGambar.php",
-                  data: dataString,
-                  cache: false,
-                  success: function (data) {
-                      console.log(data);
-                      modal.find('.dash').html(data);
-                  },
-                  error: function(err) {
-                      console.log(err);
-                  }
-              });
-      })
-
     $('#ModalDetailsCommentApprove').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget) // Button that triggered the modal
             var recipient = button.data('whatever') // Extract info from data-* attributes
@@ -319,6 +327,26 @@ $es=mysql_fetch_array($check);
               });
       })
 
+      $('#ModalDetailGambar').on('show.bs.modal', function (event) {
+              var button = $(event.relatedTarget) // Button that triggered the modal
+              var recipient = button.data('whatever') // Extract info from data-* attributes
+              var modal = $(this);
+              var dataString = 'id=' + recipient;
+
+                $.ajax({
+                    type: "GET",
+                    url: "showGambar.php",
+                    data: dataString,
+                    cache: false,
+                    success: function (data) {
+                        console.log(data);
+                        modal.find('.dash').html(data);
+                    },
+                    error: function(err) {
+                        console.log(err);
+                    }
+                });
+        })
 
       $('#ModalDetailsCommentReject').on('show.bs.modal', function (event) {
               var button = $(event.relatedTarget) // Button that triggered the modal

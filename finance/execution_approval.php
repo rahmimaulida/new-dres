@@ -38,13 +38,14 @@ $es=mysql_fetch_array($check);
                 <thead>
                 <tr valign="middle">
                   <th class="text-center" width="1px" rowspan="2">Ticket No</th>
+                  <th class="text-center" rowspan="2">Sector</th>
+                  <th class="text-center" rowspan="2">Shift</th>
                   <th class="text-center" colspan="2">Line Inspector</th>
                   <th class="text-center" colspan="2">Engineer</th>
                   <th class="text-center" colspan="2">Supervisor</th>
                   <th class="text-center" colspan="2">CS&Q Manager</th>
                   <th class="text-center" colspan="2">Finance Manager</th>
                   <th class="text-center" width="3px" rowspan="2">SAP Admin</th>
-                  <th class="text-center" rowspan="2">Sector</th>
                   <th class="text-center" width="1px" rowspan="2">Total Reject Qty</th>
                   <th class="text-center" width="2px" rowspan="2">Total Amount</th>
                   <th class="text-center" rowspan="2">Status</th>
@@ -71,7 +72,7 @@ $es=mysql_fetch_array($check);
 
                 <tbody>
                 <?php
-                  $query=mysql_query("SELECT tbl_prod_reject.no_ticket, tbl_prod_reject.insertDate, tbl_prod_reject.sector,
+                  $query=mysql_query("SELECT tbl_prod_reject.no_ticket, tbl_prod_reject.shift, tbl_prod_reject.insertDate, tbl_prod_reject.sector,
                     tbl_prod_reject.insertedBy, SUM(tbl_prod_reject.qty) as total,
                   SUM(tbl_prod_reject.amount) as amount, tbl_prod_reject.action, tbl_prod_reject.pic,
                   tbl_approve.mgr_name, tbl_approve.eng_name, tbl_approve.spv, tbl_approve.finance_mgr, tbl_approve.sap_admin,
@@ -97,6 +98,8 @@ $es=mysql_fetch_array($check);
                   <?php } else { ?>
                     <td><a class="btn btn-danger btn-xs" href="#" data-target="#ModalDetail" data-whatever="<?php echo $b['no_ticket']; ?>" data-toggle="modal"><?php echo $b['no_ticket']; $no_ticket = $b['no_ticket']; ?></a></td>
                   <?php } ?>
+                  <td><?php echo $b['sector']; ?></td>
+                  <td><?php echo $b['shift']; ?></td>
                   <td><?php echo $b['insertedBy']; ?></td>
                   <td><?php echo $b['insertDate']; ?></td>
                   <td><?php echo $b['eng_name']; ?></td>
@@ -109,7 +112,6 @@ $es=mysql_fetch_array($check);
                   <td><?php echo $b['finance_mgr']; ?></td>
                   <td><?php echo $b['finance_mgrDate']; ?></td>
                   <td><?php echo $b['sap_admin']; ?></td>
-                  <td><?php echo $b['sector']; ?></td>
                   <td><?php echo $b['total'] ?></td>
                   <td>US$<?php echo number_format($b['amount'],2,",","."); ?></td>
                   <td><?php echo $b['action'] ?></td>

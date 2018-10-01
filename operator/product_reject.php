@@ -41,8 +41,9 @@ $history = MySQL_query("SELECT * FROM tbl_history WHERE information LIKE '%".$_S
                 <thead>
                 <tr valign="middle">
                   <th class="text-center" width="1px" rowspan="2">Ticket No</th>
-                  <th class="text-center" colspan="2">Line Inspector</th>
                   <th class="text-center" rowspan="2">Sector</th>
+                  <th class="text-center" rowspan="2">Shift</th>
+                  <th class="text-center" colspan="2">Line Inspector</th>
                   <th class="text-center" width="1px" rowspan="2">Total Reject Qty</th>
                   <th class="text-center" rowspan="2">Status</th>
                 </tr>
@@ -56,7 +57,7 @@ $history = MySQL_query("SELECT * FROM tbl_history WHERE information LIKE '%".$_S
                 <tbody>
                 <?php
                   $query=mysql_query("SELECT no_ticket, insertDate, sector, insertedBy, SUM(qty) as total, SUM(amount) as amount,
-                   action FROM tbl_prod_reject WHERE insertedBy = '".$_SESSION['name']."' GROUP BY no_ticket") or die(mysql_error());
+                   action, shift FROM tbl_prod_reject WHERE insertedBy = '".$_SESSION['name']."' GROUP BY no_ticket") or die(mysql_error());
                   $jumlah=mysql_num_rows($query);
                   if ($jumlah==0){?><td colspan="17" style="text-align: center;">NO WAITING LIST APPROVAL</td><?php }
                   while($b=mysql_fetch_array($query)){
@@ -75,9 +76,10 @@ $history = MySQL_query("SELECT * FROM tbl_history WHERE information LIKE '%".$_S
                 <?php } else { ?>
                   <td><a class="btn btn-danger btn-xs" href="#" data-target="#ModalDetail" data-whatever="<?php echo $b['no_ticket']; ?>" data-toggle="modal"><?php echo $b['no_ticket']; $no_ticket = $b['no_ticket']; ?></a></td>
                 <?php } ?>
+                  <td><?php echo $b['sector']; ?></td>
+                  <td><?php echo $b['shift']; ?></td>
                   <td><?php echo $b['insertedBy']; ?></td>
                   <td><?php echo $b['insertDate']; ?></td>
-                  <td><?php echo $b['sector']; ?></td>
                   <td><?php echo $b['total'] ?></td>
                   <td><?php echo $b['action'] ?></td>
 
